@@ -22,8 +22,8 @@ data class PostEntity(
     @Embedded
     val coordinates: CoordinatesEmbeddable? = null,
     val link: String? = null,
-    val likeOwnerIds: List<Int>? = emptyList(),
-    val mentionIds:  List<Int>? = emptyList(),
+    val likeOwnerIds: List<Int> = emptyList(),
+    val mentionIds:  List<Int> = emptyList(),
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @TypeConverters(Converters::class)
@@ -31,7 +31,7 @@ data class PostEntity(
     val attachment: AttachmentEmbeddable? = null,
     val ownedByMe: Boolean,
     @TypeConverters(Converters::class)
-    val users: Map<Int, User>?=null,
+    val users: Map<Int, User> = emptyMap(),
 
     ){
     fun toDto()= Post(

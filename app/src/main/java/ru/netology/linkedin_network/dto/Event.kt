@@ -12,10 +12,10 @@ data class Event(
     val authorJob: String? = null,
     val content: String? = null,
     /*дата проведения*/
-    val datetime: String,
+    val datetime: String? = null,
     val published: String? = null,
     /*координаты события*/
-    @SerializedName("coords")
+    @SerializedName("emptyEvent")
     val coordinates: Coordinates? =null,
     val type: EventType? = EventType.OFFLINE,
     /*кто лайкнул*/
@@ -29,19 +29,18 @@ data class Event(
     val attachment: Attachment? = null,
     val link: String? = null,
     val ownedByMe: Boolean=false,
-    val users: Map<Int, User>?=null
+    val users: Map<Int, User> = emptyMap(),
 ) : FeedItem {
     companion object {
         val emptyEvent = Event(
             id = 0,
-            author = nuller.name,
-            authorId = nuller.id,
             content = "",
-            datetime = "2021-08-17T16:46:58.887547Z",
-            published ="2021-08-17T16:46:58.887547Z",
-            type = EventType.ONLINE,
-            authorAvatar=nuller.avatar,
-            users =null
+            datetime = null,
+            coordinates = null,
+            type = EventType.OFFLINE,
+            attachment = null,
+            link = null,
+            speakerIds = listOf()
         )
     }
 }

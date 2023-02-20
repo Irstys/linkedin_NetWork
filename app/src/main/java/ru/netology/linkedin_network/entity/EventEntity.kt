@@ -5,11 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import ru.netology.linkedin_network.dao.Converters
-import ru.netology.linkedin_network.dto.Attachment
-import ru.netology.linkedin_network.dto.Coordinates
 import ru.netology.linkedin_network.dto.Event
 import ru.netology.linkedin_network.dto.User
-import ru.netology.linkedin_network.enumeration.EventType
 
 @Entity(tableName = "events")
 @TypeConverters(Converters::class)
@@ -21,12 +18,12 @@ data class EventEntity(
     val authorAvatar: String? = null,
     val authorJob: String? = null,
     val content: String? = null,
-    val datetime: String,
+    val datetime: String? = null,
     val published: String? = null,
     @Embedded
     val coordinates: CoordinatesEmbeddable? =null,
     @Embedded
-    val type: EventType? = EventType.OFFLINE,
+    val type: EventTypeEmbeddable,
     val likeOwnerIds:  List<Int> = emptyList(),
     val likedByMe: Boolean =false,
     val speakerIds:  List<Int> = emptyList(),
@@ -36,7 +33,7 @@ data class EventEntity(
     val attachment: AttachmentEmbeddable? = null,
     val link: String? = null,
     val ownedByMe: Boolean=false,
-    val users: Map<Int, User>?=null
+    val users: Map<Int, User> = emptyMap(),
 ) {
 
     fun toDto() = Event(
@@ -49,7 +46,7 @@ data class EventEntity(
         datetime = datetime,
         published = published,
         coordinates = coordinates?.toDto(),
-        type = type,
+        type = type.toDto(),
         likeOwnerIds = likeOwnerIds,
         likedByMe = likedByMe,
         speakerIds = speakerIds,
@@ -73,7 +70,7 @@ data class EventEntity(
                 dto.datetime,
                 dto.published,
                 CoordinatesEmbeddable.fromDto(dto.coordinates),
-                dto.type,
+                EventTypeEmbeddable.fromDto(dto.type),
                 dto.likeOwnerIds,
                 dto.likedByMe,
                 dto.speakerIds,
