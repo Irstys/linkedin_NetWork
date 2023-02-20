@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "20010257906",
+    "project_id": "linkedinnework",
+    "storage_bucket": "linkedinnework.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20010257906:android:f63cf17b1fbd98d8f86f6b",
+        "android_client_info": {
+          "package_name": "ru.netology.linkedin_network"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20010257906-o1h7nqknb7ceo1tbqj2uq3ls0033vqa7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHChtV-Q8G1bMC96T2zK0QFbbv3FSo94k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20010257906-o1h7nqknb7ceo1tbqj2uq3ls0033vqa7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
