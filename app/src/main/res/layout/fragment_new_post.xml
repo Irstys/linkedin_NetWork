@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.NewPostFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/commonSpacingSmall"
+        android:layout_marginTop="@dimen/commonSpacingSmall"
+        android:layout_marginEnd="@dimen/commonSpacingSmall"
+        style="@style/Widget.AppTheme.Viewing"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/add_attachment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/commonSpacingSmall">
+
+        <EditText
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/commonSpacingSLarge"
+            android:autoLink="web"
+            android:autofillHints="no"
+            android:background="@android:color/transparent"
+            android:gravity="start|top"
+            android:hint="@string/content"
+            android:inputType="textMultiLine"
+            android:linksClickable="true"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <FrameLayout
+            android:id="@+id/media_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="@dimen/height_image_ad"
+                android:layout_height="@dimen/height_image_ad"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/image_full_screen" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/remove_media"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:text="@string/obj_remove" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_attachment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/button_panel"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/add_coordinates"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/postAvatarSize"
+            android:layout_marginStart="@dimen/commonSpacingSmall"
+            android:layout_marginEnd="@dimen/commonSpacingSmall"
+            android:layout_marginBottom="@dimen/commonSpacingSmall"
+            android:autofillHints="@string/add_coordinates"
+            style="@style/Widget.AppTheme.Viewing"
+            android:focusable="false"
+            android:hint="@string/add_coordinates"
+            android:inputType="none"
+            android:padding="@dimen/commonSpacingMedium"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:drawableStartCompat="@drawable/ic_location"
+            app:drawableTint="@color/teal_700"
+            tools:ignore="TextFields" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/commonSpacingSmall"
+            android:paddingEnd="@dimen/commonSpacingSmall"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/commonSpacingSmall">
+            <TextView
+                android:id="@+id/name_link"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/postAvatarSize"
+                android:layout_marginEnd="0dp"
+                android:paddingStart="@dimen/iconButtonMinSize"
+                android:autofillHints="no"
+                android:textStyle="bold"
+                android:hint="@string/link"
+                style="@style/Widget.AppTheme.Viewing"
+                android:paddingEnd="@dimen/commonSpacingSmall"
+                android:layout_marginBottom="@dimen/commonSpacingSmall"
+                android:layout_marginTop="@dimen/commonSpacingSmall"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <EditText
+                android:id="@+id/link"
+                android:layout_width="@dimen/commonSpacingColum"
+                android:layout_height="@dimen/postAvatarSize"
+                android:layout_marginEnd="0dp"
+                android:paddingStart="@dimen/iconButtonMinSize"
+                android:autofillHints="no"
+                android:textStyle="bold"
+                style="@style/Widget.AppTheme.Viewing"
+                android:hint="@string/link"
+                android:inputType="textPostalAddress"
+                android:paddingEnd="@dimen/commonSpacingSmall"
+                app:layout_constraintStart_toEndOf="@id/name_link"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addLink"
+                android:layout_width="@dimen/commonSpacingMinColum"
+                android:layout_height="@dimen/postAvatarSize"
+                android:layout_gravity="center_horizontal"
+                style="@style/Widget.AppTheme.ButtonAdd"
+                android:textColor="@color/white"
+                android:text="@string/link"
+                app:icon="@drawable/ic_add_link_24"
+                app:iconTint="@color/white"
+                tools:ignore="RelativeOverlap,RtlSymmetry"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/commonSpacingSmall"
+            android:paddingEnd="@dimen/commonSpacingSmall"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/commonSpacingSmall">
+        <EditText
+            android:id="@+id/name_mentions"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/postAvatarSize"
+            android:layout_marginEnd="0dp"
+            android:paddingStart="@dimen/iconButtonMinSize"
+            android:autofillHints="no"
+            android:textStyle="bold"
+            style="@style/Widget.AppTheme.Viewing"
+            android:hint="@string/mentions"
+            android:inputType="textPostalAddress"
+            android:paddingEnd="@dimen/commonSpacingSmall"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_mention"
+            android:layout_width="@dimen/commonSpacingColum"
+            android:layout_height="@dimen/postAvatarSize"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/commonSpacingSmall"
+            android:layout_marginTop="@dimen/commonSpacingSmall"
+            android:layout_marginBottom="@dimen/commonSpacingMedium"
+            style="@style/Widget.AppTheme.ButtonAdd"
+            android:checkable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/mentions"
+            app:iconTint="@color/white"
+            app:icon="@drawable/ic_mention"
+            tools:ignore="MissingConstraints,NotSibling,RtlSymmetry" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ScrollView
+            android:id="@+id/scroll_mentions"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/commonSpacingXSLarge"
+            android:layout_margin="@dimen/commonSpacingSmall"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mention_ids"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/commonSpacingXSLarge"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/card_user_preview"/>
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/commonSpacingMedium"
+        android:layout_marginBottom="@dimen/commonSpacingSmall"
+        android:backgroundTint="@color/teal_200"
+        android:clickable="true"
+        android:contentDescription="@string/add_post"
+        android:focusable="true"
+          app:layout_constraintBottom_toTopOf="@id/button_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_check"
+        app:tint="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/button_panel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/commonSpacingSmall"
+        android:layout_marginEnd="@dimen/commonSpacingSmall"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pick_photo"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/commonSpacingSmall"
+            android:contentDescription="@string/pick_photo"
+            android:padding="@dimen/commonSpacingSmall"
+            app:icon="@drawable/ic_photo_24"
+            app:iconSize="@dimen/iconButtonMinSize"
+            app:iconTint="@color/colorGrey" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/take_photo"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/commonSpacingSmall"
+            android:contentDescription="@string/take_photo"
+            android:padding="@dimen/commonSpacingSmall"
+            app:icon="@drawable/ic_attach_file_24"
+            app:iconSize="@dimen/iconButtonMinSize"
+            app:iconTint="@color/colorGrey" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pick_video"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/commonSpacingSmall"
+            android:contentDescription="@string/pick_video"
+            android:padding="@dimen/commonSpacingSmall"
+            app:icon="@drawable/ic_videocam"
+            app:iconSize="@dimen/iconButtonMinSize"
+            app:iconTint="@color/colorGrey" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pick_audio"
+            style="@style/Widget.AppTheme.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/commonSpacingSmall"
+            android:contentDescription="@string/pick_audio"
+            android:padding="@dimen/commonSpacingSmall"
+            app:icon="@drawable/ic_music"
+            app:iconSize="@dimen/iconButtonMinSize"
+            app:iconTint="@color/colorGrey" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

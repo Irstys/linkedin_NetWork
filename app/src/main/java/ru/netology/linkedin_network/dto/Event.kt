@@ -29,7 +29,7 @@ data class Event(
     val attachment: Attachment? = null,
     val link: String? = null,
     val ownedByMe: Boolean=false,
-    val users: Map<Int, User> = emptyMap(),
+    val users: Map<Int, UserPreview> = emptyMap(),
 ) : FeedItem {
     companion object {
         val emptyEvent = Event(

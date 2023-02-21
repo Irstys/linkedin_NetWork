@@ -7,6 +7,7 @@ import androidx.room.TypeConverters
 import ru.netology.linkedin_network.dao.Converters
 import ru.netology.linkedin_network.dto.Post
 import ru.netology.linkedin_network.dto.User
+import ru.netology.linkedin_network.dto.UserPreview
 
 @Entity(tableName = "posts")
 @TypeConverters(Converters::class)
@@ -31,7 +32,7 @@ data class PostEntity(
     val attachment: AttachmentEmbeddable? = null,
     val ownedByMe: Boolean,
     @TypeConverters(Converters::class)
-    val users: Map<Int, User> = emptyMap(),
+    val users: Map<Int, UserPreview> = emptyMap(),
 
     ){
     fun toDto()= Post(

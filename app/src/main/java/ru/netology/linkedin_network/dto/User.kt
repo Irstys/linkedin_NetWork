@@ -6,10 +6,6 @@ data class User(
     val name: String = "",
     val avatar: String? = null,
     var isChecked: Boolean = false,
-    var isLiked: Boolean = false,
-    var isMentioned: Boolean = false,
-    var isParticipating: Boolean = false,
-    var isSpeaker: Boolean = false,
 ) {
     companion object {
         val nuller = User(

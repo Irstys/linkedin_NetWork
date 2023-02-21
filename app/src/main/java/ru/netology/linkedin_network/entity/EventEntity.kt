@@ -7,6 +7,7 @@ import androidx.room.TypeConverters
 import ru.netology.linkedin_network.dao.Converters
 import ru.netology.linkedin_network.dto.Event
 import ru.netology.linkedin_network.dto.User
+import ru.netology.linkedin_network.dto.UserPreview
 
 @Entity(tableName = "events")
 @TypeConverters(Converters::class)
@@ -33,7 +34,7 @@ data class EventEntity(
     val attachment: AttachmentEmbeddable? = null,
     val link: String? = null,
     val ownedByMe: Boolean=false,
-    val users: Map<Int, User> = emptyMap(),
+    val users: Map<Int, UserPreview> = emptyMap(),
 ) {
 
     fun toDto() = Event(

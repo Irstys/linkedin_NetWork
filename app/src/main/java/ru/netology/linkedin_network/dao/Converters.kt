@@ -8,6 +8,7 @@ import ru.netology.linkedin_network.enumeration.AttachmentType
 import ru.netology.linkedin_network.enumeration.EventType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import ru.netology.linkedin_network.dto.UserPreview
 
 @Dao
 class Converters {
@@ -29,13 +30,13 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromUsers(map: Map<Int, User>): String {
+    fun fromUsers(map: Map<Int, UserPreview>): String {
         return Gson().toJson(map)
     }
 
     @TypeConverter
-    fun toUsers(string: String): Map<Int, User> {
-        val maptype = object : TypeToken<Map<Int, User>>() {}.type
+    fun toUsers(string: String): Map<Int, UserPreview> {
+        val maptype = object : TypeToken<Map<Int, UserPreview>>() {}.type
         return Gson().fromJson(string, maptype)
     }
 

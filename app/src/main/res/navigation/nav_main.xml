@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/postFeedFragment">
+
+    <fragment
+        android:id="@+id/postFeedFragment"
+        android:name="ru.netology.linkedin_network.ui.PostFeedFragment"
+        android:label="@string/posts"
+        tools:layout="@layout/fragment_post_feed">
+        <action
+            android:id="@+id/action_postFeedFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_showPhotoFragment"
+            app:destination="@id/showPhotoFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_postUsersListFragment"
+            app:destination="@id/postUsersListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="ru.netology.linkedin_network.ui.NewPostFragment"
+        android:label="@string/add_post"
+        tools:layout="@layout/fragment_new_post">
+        <action
+            android:id="@+id/action_newPostFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_choosePostUsersFragment"
+            app:destination="@id/choosePostUsersFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventFeedFragment"
+        android:name="ru.netology.linkedin_network.ui.EventFeedFragment"
+        android:label="@string/events"
+        tools:layout="@layout/fragment_event_feed">
+        <action
+            android:id="@+id/action_eventFeedFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+        <action
+            android:id="@+id/action_eventFeedFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_eventFeedFragment_to_showPhotoFragment"
+            app:destination="@id/showPhotoFragment" />
+        <action
+            android:id="@+id/action_eventFeedFragment_to_eventUsersListFragment"
+            app:destination="@id/eventUsersListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.netology.linkedin_network.ui.NewEventFragment"
+        android:label="@string/add_event"
+        tools:layout="@layout/fragment_new_event">
+        <action
+            android:id="@+id/action_newEventFragment_to_chooseEventUsersFragment"
+            app:destination="@id/chooseEventUsersFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="ru.netology.linkedin_network.ui.MapsFragment"
+        android:label="@string/map"
+        tools:layout="@layout/fragment_maps">
+    </fragment>
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.netology.linkedin_network.ui.SignInFragment"
+        android:label="@string/sign_in"
+        tools:layout="@layout/fragment_sign_in">
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="ru.netology.linkedin_network.ui.SignUpFragment"
+        android:label="@string/sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_registerFragment_to_addAvatarFragment"
+            app:destination="@id/addAvatarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addAvatarFragment"
+        android:name="ru.netology.linkedin_network.ui.AddAvatarFragment"
+        android:label="@string/load_avatar"
+        tools:layout="@layout/fragment_add_avatar">
+    </fragment>
+
+    <fragment
+        android:id="@+id/showPhotoFragment"
+        android:name="ru.netology.linkedin_network.ui.ImageFragment"
+        android:label="@string/photo"
+        tools:layout="@layout/fragment_image">
+    </fragment>
+
+    <fragment
+        android:id="@+id/postUsersListFragment"
+        android:name="ru.netology.linkedin_network.ui.PostUsersListFragment"
+        android:label="@string/users"
+        tools:layout="@layout/fragment_post_users_list">
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventUsersListFragment"
+        android:name="ru.netology.linkedin_network.ui.EventUsersListFragment"
+        android:label="@string/users"
+        tools:layout="@layout/fragment_post_users_list">
+    </fragment>
+
+    <fragment
+        android:id="@+id/choosePostUsersFragment"
+        android:name="ru.netology.linkedin_network.ui.ChoosePostUsersFragment"
+        android:label="@string/choose_users"
+        tools:layout="@layout/fragment_choose_post_users">
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseEventUsersFragment"
+        android:name="ru.netology.linkedin_network.ui.ChooseEventUsersFragment"
+        android:label="@string/choose_users"
+        tools:layout="@layout/fragment_choose_post_users">
+    </fragment>
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="ru.netology.linkedin_network.ui.ContactsFragment"
+        android:label="@string/contacts"
+        tools:layout="@layout/fragment_contacts">
+    </fragment>
+
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.netology.linkedin_network.ui.NewJobFragment"
+        android:label="@string/add_jobs"
+        tools:layout="@layout/fragment_new_job">
+    </fragment>
+
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="ru.netology.linkedin_network.ui.ProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
+    <activity
+        android:id="@+id/intentHandlerActivity"
+        android:name="ru.netology.linkedin_network.ui.IntentHandlerActivity"
+        android:label="activity_intent_handler"
+        tools:layout="@layout/activity_intent_handler" />
+
+</navigation>

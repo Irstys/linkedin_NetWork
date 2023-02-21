@@ -22,7 +22,7 @@ data class Post(
     val likedByMe: Boolean = false,
     val attachment: Attachment? = null,
     val ownedByMe: Boolean = false,
-    val users: Map<Int, User> = emptyMap(),
+    val users: Map<Int, UserPreview> = emptyMap(),
 ) : FeedItem
 {
     companion object {
