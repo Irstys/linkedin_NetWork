@@ -3,6 +3,7 @@ package ru.netology.linkedin_network.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,7 @@ class JobViewHolder(
             link.setOnClickListener{
                 listener.onLinkClick(link.text.toString())
             }
-            delete.visibility = if (job.ownedByMe) View.VISIBLE else View.GONE
+            delete.isVisible =job.ownedByMe
             delete.setOnClickListener {
                 listener.onRemoveJob(job)
             }
