@@ -3,7 +3,7 @@ package ru.netology.linkedin_network.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ru.netology.linkedin_network.auth.AppAuth
-import ru.netology.linkedin_network.repository.AuthRepository
+import ru.netology.linkedin_network.repository.aurh.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

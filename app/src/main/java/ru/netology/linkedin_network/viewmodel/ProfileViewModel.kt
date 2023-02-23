@@ -8,8 +8,8 @@ import ru.netology.linkedin_network.auth.AppAuth
 import ru.netology.linkedin_network.dto.Job
 import ru.netology.linkedin_network.dto.User
 import ru.netology.linkedin_network.model.FeedModelState
-import ru.netology.linkedin_network.repository.JobRepository
-import ru.netology.linkedin_network.repository.UserRepository
+import ru.netology.linkedin_network.repository.job.JobRepository
+import ru.netology.linkedin_network.repository.user.UserRepository
 import ru.netology.linkedin_network.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

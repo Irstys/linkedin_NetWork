@@ -14,7 +14,7 @@ import ru.netology.linkedin_network.enumeration.AttachmentType
 import ru.netology.linkedin_network.enumeration.EventType
 import ru.netology.linkedin_network.model.FeedModelState
 import ru.netology.linkedin_network.model.MediaModel
-import ru.netology.linkedin_network.repository.EventRepository
+import ru.netology.linkedin_network.repository.event.EventRepository
 import ru.netology.linkedin_network.utils.SingleLiveEvent
 import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel

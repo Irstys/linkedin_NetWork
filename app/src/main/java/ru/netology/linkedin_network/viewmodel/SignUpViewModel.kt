@@ -9,7 +9,7 @@ import ru.netology.linkedin_network.auth.AppAuth
 import ru.netology.linkedin_network.dto.MediaUpload
 import ru.netology.linkedin_network.enumeration.AttachmentType
 import ru.netology.linkedin_network.model.MediaModel
-import ru.netology.linkedin_network.repository.AuthRepository
+import ru.netology.linkedin_network.repository.aurh.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File

@@ -203,9 +203,9 @@ class EventViewHolder(
                 }
             }
             if (event.participantsIds!!.isEmpty()) {
-                participates.visibility = View.INVISIBLE
+                postUsersGroup.visibility = View.INVISIBLE
             } else {
-                participates.isVisible = true
+                postUsersGroup.isVisible = true
                 val firstUserAvatarUrl = participatelist.first().avatar
                 firstParticipateAvatar.loadCircleCrop(firstUserAvatarUrl)
                 toText(participatelist, participates)

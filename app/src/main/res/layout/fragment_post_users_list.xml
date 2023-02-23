@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/commonSpacingMedium"
-    tools:context="ru.netology.linkedin_network.ui.PostUsersListFragment">
+    tools:context="ru.netology.linkedin_network.ui.post.PostUsersListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"

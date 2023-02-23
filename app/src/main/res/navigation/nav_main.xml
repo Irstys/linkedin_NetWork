@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/postFeedFragment"
-        android:name="ru.netology.linkedin_network.ui.PostFeedFragment"
+        android:name="ru.netology.linkedin_network.ui.post.PostFeedFragment"
         android:label="@string/posts"
         tools:layout="@layout/fragment_post_feed">
         <action
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/newPostFragment"
-        android:name="ru.netology.linkedin_network.ui.NewPostFragment"
+        android:name="ru.netology.linkedin_network.ui.post.NewPostFragment"
         android:label="@string/add_post"
         tools:layout="@layout/fragment_new_post">
         <action
@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/eventFeedFragment"
-        android:name="ru.netology.linkedin_network.ui.EventFeedFragment"
+        android:name="ru.netology.linkedin_network.ui.event.EventFeedFragment"
         android:label="@string/events"
         tools:layout="@layout/fragment_event_feed">
         <action
@@ -76,7 +76,7 @@
 
     <fragment
         android:id="@+id/newEventFragment"
-        android:name="ru.netology.linkedin_network.ui.NewEventFragment"
+        android:name="ru.netology.linkedin_network.ui.event.NewEventFragment"
         android:label="@string/add_event"
         tools:layout="@layout/fragment_new_event">
         <action
@@ -96,14 +96,14 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="ru.netology.linkedin_network.ui.SignInFragment"
+        android:name="ru.netology.linkedin_network.ui.auth.SignInFragment"
         android:label="@string/sign_in"
         tools:layout="@layout/fragment_sign_in">
     </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="ru.netology.linkedin_network.ui.SignUpFragment"
+        android:name="ru.netology.linkedin_network.ui.auth.SignUpFragment"
         android:label="@string/sign_up"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -127,28 +127,28 @@
 
     <fragment
         android:id="@+id/postUsersListFragment"
-        android:name="ru.netology.linkedin_network.ui.PostUsersListFragment"
+        android:name="ru.netology.linkedin_network.ui.post.PostUsersListFragment"
         android:label="@string/users"
         tools:layout="@layout/fragment_post_users_list">
     </fragment>
 
     <fragment
         android:id="@+id/eventUsersListFragment"
-        android:name="ru.netology.linkedin_network.ui.EventUsersListFragment"
+        android:name="ru.netology.linkedin_network.ui.event.EventUsersListFragment"
         android:label="@string/users"
         tools:layout="@layout/fragment_post_users_list">
     </fragment>
 
     <fragment
         android:id="@+id/choosePostUsersFragment"
-        android:name="ru.netology.linkedin_network.ui.ChoosePostUsersFragment"
+        android:name="ru.netology.linkedin_network.ui.post.ChoosePostUsersFragment"
         android:label="@string/choose_users"
         tools:layout="@layout/fragment_choose_post_users">
     </fragment>
 
     <fragment
         android:id="@+id/chooseEventUsersFragment"
-        android:name="ru.netology.linkedin_network.ui.ChooseEventUsersFragment"
+        android:name="ru.netology.linkedin_network.ui.event.ChooseEventUsersFragment"
         android:label="@string/choose_users"
         tools:layout="@layout/fragment_choose_post_users">
     </fragment>
@@ -180,23 +180,23 @@
         tools:layout="@layout/activity_intent_handler" />
     <fragment
         android:id="@+id/postMentionListFragment"
-        android:name="ru.netology.linkedin_network.ui.PostMentionListFragment"
+        android:name="ru.netology.linkedin_network.ui.post.PostMentionListFragment"
         android:label="PostMentionListFragment" />
     <fragment
         android:id="@+id/postLikedListFragment"
-        android:name="ru.netology.linkedin_network.ui.PostLikedListFragment"
+        android:name="ru.netology.linkedin_network.ui.post.PostLikedListFragment"
         android:label="PostLikedListFragment" />
     <fragment
         android:id="@+id/eventLikersListFragment"
-        android:name="ru.netology.linkedin_network.ui.EventLikersListFragment"
+        android:name="ru.netology.linkedin_network.ui.event.EventLikersListFragment"
         android:label="EventLikersListFragment" />
     <fragment
         android:id="@+id/eventParcipatesListFragment"
-        android:name="ru.netology.linkedin_network.ui.EventParcipatesListFragment"
+        android:name="ru.netology.linkedin_network.ui.event.EventParcipatesListFragment"
         android:label="EventParcipatesListFragment" />
     <fragment
         android:id="@+id/eventSpeakersListFragment"
-        android:name="ru.netology.linkedin_network.ui.EventSpeakersListFragment"
+        android:name="ru.netology.linkedin_network.ui.event.EventSpeakersListFragment"
         android:label="EventSpeakersListFragment" />
 
 </navigation>

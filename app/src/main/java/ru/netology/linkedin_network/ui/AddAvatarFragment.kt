@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ru.netology.linkedin_network.auth.AppAuth
 import ru.netology.linkedin_network.databinding.FragmentAddAvatarBinding
-import ru.netology.linkedin_network.repository.AuthRepository
+import ru.netology.linkedin_network.repository.aurh.AuthRepository
 import ru.netology.linkedin_network.viewmodel.SignUpViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
@@ -35,7 +35,7 @@ class AddAvatarFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentAddAvatarBinding.inflate(inflater, container, false)
 
         val pickPhotoLauncher =

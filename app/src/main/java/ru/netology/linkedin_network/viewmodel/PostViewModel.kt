@@ -1,7 +1,6 @@
 package ru.netology.linkedin_network.viewmodel
 
 import android.net.Uri
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,11 +11,10 @@ import ru.netology.linkedin_network.dto.*
 import ru.netology.linkedin_network.enumeration.AttachmentType
 import ru.netology.linkedin_network.model.FeedModelState
 import ru.netology.linkedin_network.model.MediaModel
-import ru.netology.linkedin_network.repository.PostRepository
+import ru.netology.linkedin_network.repository.post.PostRepository
 import ru.netology.linkedin_network.utils.SingleLiveEvent
 import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -36,7 +34,6 @@ private val noMedia = MediaModel()
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val repository: PostRepository,
     appAuth: AppAuth
 ) : ViewModel() {

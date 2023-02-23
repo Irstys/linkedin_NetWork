@@ -225,7 +225,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/participate"
-                style="@style/Widget.AppTheme.IconButton"
+                style="@style/Widget.AppTheme.CheckButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

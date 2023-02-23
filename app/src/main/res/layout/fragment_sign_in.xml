@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.SignInFragment">
+    tools:context=".ui.auth.SignInFragment">
 
     <LinearLayout
         android:layout_width="@dimen/height_image_ad"
@@ -43,7 +43,8 @@
             android:layout_weight="1"
             android:hint="@string/enter_login"
             android:inputType="text"
-            android:layout_marginBottom="@dimen/commonSpacingSmall"/>
+            android:layout_marginBottom="@dimen/commonSpacingSmall"
+            android:autofillHints="" />
         <TextView
             android:id="@+id/textPassword"
             android:layout_width="wrap_content"
@@ -60,7 +61,8 @@
             android:layout_weight="1"
             android:layout_marginBottom="@dimen/commonSpacingSmall"
             android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/sign_in_button"
