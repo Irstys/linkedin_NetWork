@@ -207,7 +207,7 @@
 
                 <TextView
                     android:id="@+id/liked_users"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/commonSpacingXLarge"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/commonSpacingSmall"
@@ -251,7 +251,7 @@
 
                 <TextView
                     android:id="@+id/participates"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/commonSpacingXLarge"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/commonSpacingSmall"
@@ -279,34 +279,9 @@
                 android:layout_weight="1"
                 app:icon="@drawable/ic_speaker"
                 app:layout_constraintEnd_toStartOf="@+id/share"
-                app:layout_constraintTop_toBottomOf="@id/content_barrier" />
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="horizontal"
-                android:layout_marginBottom="@dimen/commonSpacingSmall">
+                app:layout_constraintTop_toBottomOf="@id/content_barrier"
+                tools:text = "2"/>
 
-                <TextView
-                    android:id="@+id/speakers_user"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/commonSpacingSmall"
-                    app:layout_constraintStart_toEndOf="@+id/first_speakers_avatar"
-                    app:layout_constraintBottom_toBottomOf="@+id/first_speakers_avatar"
-                    android:text="@string/users"/>
-
-                <androidx.constraintlayout.widget.Group
-                    android:id="@+id/post_speakers_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="visible"
-                    app:constraint_referenced_ids="first_speakers_avatar, speakers_user"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/share"
                 style="@style/Widget.AppTheme.IconButton"

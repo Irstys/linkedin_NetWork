@@ -118,8 +118,6 @@
     <string name="refresh">Refresh</string>
 
     <string name="join">Join</string>
-    <string name="join_button_text">Join</string>
-    <string name="join_button_text_2">Leave</string>
 
     <string name="channel_remote_name">Server notifications</string>
     <string name="channel_remote_description">Notifications from remote server</string>
@@ -161,6 +159,7 @@
     <string name="coordinates">Coordinates</string>
     <string name="link">Link</string>
     <string name="format">Format</string>
+    <string name="online" translatable="false">Online</string>
 
     <string name="like">Like</string>
     <string name="share">Share</string>
@@ -180,7 +179,6 @@
     <string name="jobs">Jobs</string>
     <string name="users">Users</string>
     <string name="new_posts">New posts</string>
-    <string name="ad">Advertisement</string>
     <string name="work">Work experience</string>
     <string name="content">Content</string>
     <string name="search">Search</string>

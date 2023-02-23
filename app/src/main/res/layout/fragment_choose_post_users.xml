@@ -10,12 +10,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/commonSpacingXXLarge">
+        android:layout_height="@dimen/height_image">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/commonSpacingXXLarge"
+            android:layout_height="@dimen/height_image"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/card_user_to_choose" />
 

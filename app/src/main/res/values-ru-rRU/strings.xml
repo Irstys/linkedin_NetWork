@@ -72,9 +72,6 @@
     <string name="error_empty_content">Описание не может быть пустым</string>
     <string name="retry_loading">Повторить</string>
     <string name="join">Участвовать</string>
-    <string name="join_button_text">Участвовать</string>
-    <string name="join_button_text_2">Покинуть</string>
-    <string name="ad">Реклама</string>
     <string name="channel_remote_name">Уведомления с сервера</string>
     <string name="channel_remote_description">Уведомления с удалённого сервера</string>
     <string name="notification_new_post">Новый пост</string>

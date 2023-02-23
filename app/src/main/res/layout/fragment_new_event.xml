@@ -70,7 +70,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/commonSpacingSmall"
             android:checked="false"
-            android:text="@string/typeEvent"
+            android:text="@string/online"
             app:useMaterialThemeColors="false" />
 
 
