@@ -26,7 +26,7 @@ import com.yandex.mapkit.geometry.Point
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.linkedin_network.databinding.CardTextItemSeparatorBinding
 import ru.netology.linkedin_network.dto.*
-import ru.netology.linkedin_network.util.numbersToString
+import ru.netology.linkedin_network.utils.toText
 
 interface OnPostInteractionListener {
     fun onLike(post: Post) {}
@@ -36,14 +36,19 @@ interface OnPostInteractionListener {
     fun onHide(post: Post) {}
     fun loadLikedAndMentionedUsersList(post: Post) {}
     fun onFullscreenAttachment(post: Post){}
-    fun onMentors(post: Post) {}
-    fun onLikeOwner(post: Post) {}
+    fun onViewMentors(post: Post) {}
+    fun onViewLikeOwner(post: Post) {}
 }
 
 class FeedAdapter(
     private val listener: OnPostInteractionListener,
 ) : PagingDataAdapter<FeedItem, RecyclerView.ViewHolder>(FeedDiffCallback()) {
-
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is Post -> R.layout.card_post
+            is TextItemSeparator -> R.layout.card_text_item_separator
+            else -> error("unknow item type")
+        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
             R.layout.card_post -> {
@@ -54,9 +59,7 @@ class FeedAdapter(
             }
             R.layout.card_text_item_separator -> {
                 val binding =
-                    CardTextItemSeparatorBinding.inflate(LayoutInflater.from(parent.context),
-                        parent,
-                        false)
+                    CardTextItemSeparatorBinding.inflate(LayoutInflater.from(parent.context),parent,false)
                 TextItemViewHolder(binding)
             }
             else -> error("unknow item type $viewType")
@@ -77,8 +80,6 @@ class FeedAdapter(
                     holder.bind(it)
                 }
             }
-
-
             onBindViewHolder(holder, position)
         }
     }
@@ -187,15 +188,7 @@ class PostViewHolder(
             coordinates.isVisible = post.coordinates != null
             mentionedMe.isVisible = post.mentionedMe
             menu.isVisible = post.ownedByMe
-            mention.text = post.mentionIds?.size.let {
-                if (it != null) {
-                    numbersToString(it)
-                } else null
-            }.toString()
-            like.text = post.likeOwnerIds?.size?.let {              if (it != null) {
-                numbersToString(it)
-            } else null
-            }.toString()
+
 
             val usersList = post.users
             val mentorslist = mutableListOf<UserPreview>()
@@ -215,22 +208,21 @@ class PostViewHolder(
             }
 
             if (post.mentionIds!!.isEmpty()) {
-                postUsersGroup.visibility = View.GONE
+                postUsersGroup.visibility = View.INVISIBLE
             } else {
+                postUsersGroup.isVisible = true
                 val firstUserAvatarUrl = mentorslist.first().avatar
-                avatar.loadCircleCrop(firstUserAvatarUrl)
-                postUsersGroup.visibility = View.VISIBLE
+                firstUserAvatar.loadCircleCrop(firstUserAvatarUrl)
                 toText(mentorslist, users)
             }
             if (post.likeOwnerIds!!.isEmpty()) {
-                postLikersGroup.visibility = View.GONE
+                postLikersGroup.visibility = View.INVISIBLE
             } else {
+                postLikersGroup.isVisible = true
                 val firstLikedAvatarUrl = likersList.first().avatar
-                avatar.loadCircleCrop(firstLikedAvatarUrl)
-                postLikersGroup.visibility = View.VISIBLE
+                firstLikedAvatar.loadCircleCrop(firstLikedAvatarUrl)
                 toText(likersList, likedUsers)
             }
-
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -245,7 +237,10 @@ class PostViewHolder(
                                 listener.onEdit(post)
                                 true
                             }
-
+                            R.id.object_hide -> {
+                                listener.onHide(post)
+                                true
+                            }
                             else -> false
                         }
                     }
@@ -256,6 +251,12 @@ class PostViewHolder(
                 listener.onLike(post)
             }
 
+            postUsersGroup.setOnClickListener {
+                listener.onViewMentors(post)
+            }
+            postLikersGroup.setOnClickListener {
+                listener.onViewLikeOwner(post)
+            }
             share.setOnClickListener {
                 listener.onShare(post)
             }
@@ -272,11 +273,6 @@ class PostViewHolder(
                         ).also { pointArg = it }
                     })
             }
-
-            postUsersGroup.setOnClickListener {
-                listener.loadLikedAndMentionedUsersList(post)
-            }
-
         }
     }
 }

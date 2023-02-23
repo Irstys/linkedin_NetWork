@@ -170,96 +170,153 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="image, video" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/like"
-            style="@style/Widget.AppTheme.CheckButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:contentDescription="@string/like"
-            app:icon="@drawable/ic_like_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content_barrier"
-            tools:text="@string/like" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/share"
-            style="@style/Widget.AppTheme.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/commonSpacingMedium"
-            android:contentDescription="@string/share"
-            app:icon="@drawable/ic_share_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/content_barrier"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/participate"
-            style="@style/Widget.AppTheme.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:contentDescription="@string/participants"
-            app:icon="@drawable/ic_participated"
-            app:layout_constraintEnd_toStartOf="@+id/speakers"
-            app:layout_constraintStart_toEndOf="@+id/like"
-            app:layout_constraintTop_toBottomOf="@id/content_barrier"
-            tools:text="@string/participants" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/speakers"
-            style="@style/Widget.AppTheme.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/commonSpacingMedium"
-            android:contentDescription="@string/speakers"
-            android:checkable="true"
-            app:icon="@drawable/ic_speaker"
-            app:layout_constraintEnd_toStartOf="@+id/share"
-            app:layout_constraintTop_toBottomOf="@id/content_barrier"
-            tools:text="124" />
-
-
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/footer_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="like,share,participate,speakers, coordinates" />
-
-        <ImageView
-            android:id="@+id/first_user_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/iconButtonMinSize"
-            android:layout_marginTop="@dimen/commonSpacingSmall"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/footer_barrier"
-            app:srcCompat="@drawable/ic_avatar"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/event_users"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/commonSpacingSmall"
-            android:layout_marginTop="@dimen/commonSpacingSmall"
-            android:gravity="center_horizontal"
-            android:text="@string/users"
-            app:layout_constraintBottom_toBottomOf="@id/first_user_avatar"
-            app:layout_constraintStart_toEndOf="@id/first_user_avatar"
-            app:layout_constraintTop_toBottomOf="@id/footer_barrier" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/event_users_group"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="visible"
-            app:constraint_referenced_ids="first_user_avatar, event_users"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="9"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/footer_barrier" />
+            app:layout_constraintTop_toBottomOf="@id/content_barrier"
+            android:layout_marginBottom="@dimen/commonSpacingSmall">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/like"
+                style="@style/Widget.AppTheme.CheckButton"
+                android:layout_width="@dimen/iconButtonSize"
+                android:layout_height="@dimen/iconButtonSize"
+                android:checkable="true"
+                android:layout_weight="1"
+                android:contentDescription="@string/like"
+                app:icon="@drawable/ic_like_24" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2">
+
+                <ImageView
+                    android:id="@+id/first_liked_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/iconButtonMinSize"
+                    app:srcCompat="@drawable/ic_avatar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/liked_users"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/commonSpacingSmall"
+                    app:layout_constraintStart_toEndOf="@+id/first_liked_avatar"
+                    app:layout_constraintBottom_toBottomOf="@+id/first_liked_avatar"
+                    android:text="@string/users"/>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/post_likers_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="first_liked_avatar, liked_users" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/participate"
+                style="@style/Widget.AppTheme.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checkable="true"
+                android:contentDescription="@string/participants"
+                app:icon="@drawable/ic_participated" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/commonSpacingSmall">
+                <ImageView
+                    android:id="@+id/first_participate_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/iconButtonMinSize"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:srcCompat="@drawable/ic_avatar"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/participates"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/commonSpacingSmall"
+                    app:layout_constraintStart_toEndOf="@+id/first_participate_avatar"
+                    app:layout_constraintBottom_toBottomOf="@+id/first_participate_avatar"
+                    android:text="@string/users"/>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/post_users_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="first_participate_avatar, participates"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/speakers"
+                style="@style/Widget.AppTheme.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/speakers"
+                android:checkable="true"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_speaker"
+                app:layout_constraintEnd_toStartOf="@+id/share"
+                app:layout_constraintTop_toBottomOf="@id/content_barrier" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/commonSpacingSmall">
+
+                <TextView
+                    android:id="@+id/speakers_user"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/commonSpacingSmall"
+                    app:layout_constraintStart_toEndOf="@+id/first_speakers_avatar"
+                    app:layout_constraintBottom_toBottomOf="@+id/first_speakers_avatar"
+                    android:text="@string/users"/>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/post_speakers_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="first_speakers_avatar, speakers_user"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/share"
+                style="@style/Widget.AppTheme.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/share"
+                app:icon="@drawable/ic_share_24"
+                tools:ignore="DuplicateSpeakableTextCheck" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

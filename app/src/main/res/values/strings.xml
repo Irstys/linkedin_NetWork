@@ -98,6 +98,7 @@
     <string name="profile">Profile</string>
     <string name="map">map</string>
     <string name="choose_users">Choose users</string>
+    <string name="and">and</string>
 
     //job
     <string name="get_job_details">Get job details</string>

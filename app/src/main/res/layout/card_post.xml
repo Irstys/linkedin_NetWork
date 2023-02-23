@@ -8,6 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/thisPost"
         android:padding="@dimen/commonSpacingMedium">
 
         <ImageView
@@ -186,7 +187,7 @@
                 android:id="@+id/liked_users"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_height="@dimen/iconButtonMinSize"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/commonSpacingMedium"
                 app:layout_constraintStart_toEndOf="@+id/first_liked_avatar"
                 app:layout_constraintBottom_toBottomOf="@+id/first_liked_avatar"
@@ -233,7 +234,7 @@
             android:id="@+id/users"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_height="@dimen/iconButtonMinSize"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/commonSpacingMedium"
             app:layout_constraintStart_toEndOf="@+id/first_user_avatar"
             app:layout_constraintBottom_toBottomOf="@+id/first_user_avatar"

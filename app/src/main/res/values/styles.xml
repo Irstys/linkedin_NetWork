@@ -25,8 +25,9 @@
         <item name="iconPadding">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingStart">@dimen/commonSpacingMedium</item>
-        <item name="android:paddingEnd">@dimen/commonSpacingMedium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/commonSpacingSmall</item>
+        <item name="android:paddingEnd">@dimen/commonSpacingSmall</item>
         <item name="android:minWidth">@dimen/iconButtonSize</item>
         <item name="android:minHeight">@dimen/iconButtonSize</item>
     </style>

@@ -1,5 +1,7 @@
 package ru.netology.linkedin_network.adapter
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.databinding.CardEventBinding
-import ru.netology.linkedin_network.dto.Event
 import ru.netology.linkedin_network.enumeration.AttachmentType.*
 import ru.netology.linkedin_network.enumeration.EventType.*
 import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
@@ -23,8 +25,11 @@ import ru.netology.linkedin_network.view.loadCircleCrop
 import com.google.android.exoplayer2.MediaItem
 import com.yandex.mapkit.geometry.Point
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.netology.linkedin_network.dto.*
+import ru.netology.linkedin_network.util.numbersToString
+import ru.netology.linkedin_network.utils.toText
 
-interface EventInteractionListener {
+interface OnEventInteractionListener {
     fun onLike(event: Event) {}
     fun onShare(event: Event) {}
     fun onParticipateInEvent(event: Event) {}
@@ -32,10 +37,13 @@ interface EventInteractionListener {
     fun onRemove(event: Event) {}
     fun loadEventUsersList(event: Event) {}
     fun onFullscreenAttachment(event: Event) {}
+    fun onViewParticipates(event: Event) {}
+    fun onViewSpeakers(event: Event) {}
+    fun onViewLikeOwner(event: Event) {}
 }
 
 class EventAdapter(
-    private val onInteractionListener: EventInteractionListener,
+    private val onInteractionListener: OnEventInteractionListener,
 ) : PagingDataAdapter<Event, EventViewHolder>(EventDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -46,13 +54,65 @@ class EventAdapter(
         val event = getItem(position) ?: return
         holder.bind(event)
     }
+
+    override fun onBindViewHolder(
+        holder: EventViewHolder,
+        position: Int,
+        payloads: MutableList<Any>,
+    ) {
+        payloads.forEach {
+            if (it is Payload) {
+                holder.bind(it)
+            }
+        }
+        onBindViewHolder(holder, position)
+    }
 }
+
 
 class EventViewHolder(
     private val binding: CardEventBinding,
-    private val listener: EventInteractionListener
+    private val listener: OnEventInteractionListener
 ) : RecyclerView.ViewHolder(binding.root) {
-
+    fun bind(payload: Payload) {
+        payload.liked?.also { liked ->
+            binding.like.setIconResource(
+                if (liked) R.drawable.ic_liked_24 else R.drawable.ic_like_24
+            )
+            if (liked) {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    binding.like,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.2F, 1.0F, 1.2F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.2F, 1.0F, 1.2F)
+                ).start()
+            } else {
+                ObjectAnimator.ofFloat(
+                    binding.like,
+                    View.ROTATION,
+                    0F, 360F
+                ).start()
+            }
+        }
+        payload.join?.also { join ->
+            binding.participate.setIconResource(
+                if (join) R.drawable.ic_participated else R.drawable.ic_leave
+            )
+            if (join) {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    binding.participate,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.2F, 1.0F, 1.2F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.2F, 1.0F, 1.2F)
+                ).start()
+            } else {
+                ObjectAnimator.ofFloat(
+                    binding.participate,
+                    View.ROTATION,
+                    0F, 360F
+                ).start()
+            }
+        }
+        payload.content?.let(binding.content::setText)
+    }
     private val parentView = binding.root
     val videoThumbnail = binding.videoThumbnail
     val videoContainer = binding.video
@@ -116,25 +176,54 @@ class EventViewHolder(
             val eventText = event.content + linkText
             content.text = eventText
             like.isChecked = event.likedByMe
-            like.text = "${event.likeOwnerIds.size}"
             participate.isChecked = event.participatedByMe
-            participate.text = "${event.participantsIds.size}"
             coordinates.visibility = if (event.coordinates != null) View.VISIBLE else View.INVISIBLE
             menu.visibility = if (event.ownedByMe) View.VISIBLE else View.INVISIBLE
-            speakers.text = "${event.speakerIds.size}"
 
-            if (event.users!!.isEmpty()) {
-                eventUsersGroup.visibility = View.GONE
-            } else {
-                val firstUserAvatarUrl = event.users.values.first().avatar
-                avatar.loadCircleCrop(firstUserAvatarUrl)
-                eventUsersGroup.visibility = View.VISIBLE
-                if (event.users.size >= 2) {
-                    val likedAndMentionedUsersText = "${event.users.values.first().name} and ${event.users.size - 1} users"
-                    eventUsers.text = likedAndMentionedUsersText
-                } else if (event.users.size == 1) {
-                    eventUsers.text = event.users.values.first().name
+
+            val usersList = event.users
+            val speakerslist = mutableListOf<UserPreview>()
+            val participatelist = mutableListOf<UserPreview>()
+            val likersList =mutableListOf<UserPreview>()
+
+            if (usersList != null) {
+                for ((key, value) in usersList) {
+                    if (event.likeOwnerIds.contains(key)){
+                        value.isLiked = true
+                        likersList.add(value)
+                    }
+                    if (event.speakerIds.contains(key)) {
+                        value.isSpeaker = true
+                        speakerslist.add(value)
+                    }
+                    if (event.participantsIds.contains(key)) {
+                        value.isSpeaker = true
+                        participatelist.add(value)
+                    }
                 }
+            }
+            if (event.participantsIds!!.isEmpty()) {
+                participates.visibility = View.INVISIBLE
+            } else {
+                participates.isVisible = true
+                val firstUserAvatarUrl = participatelist.first().avatar
+                firstParticipateAvatar.loadCircleCrop(firstUserAvatarUrl)
+                toText(participatelist, participates)
+            }
+
+            if (event.speakerIds!!.isEmpty()) {
+                speakersUser.visibility = View.INVISIBLE
+            } else {
+                speakersUser.isVisible = true
+                speakersUser.text = numbersToString(speakerslist.size )
+            }
+            if (event.likeOwnerIds!!.isEmpty()) {
+                postLikersGroup.visibility = View.GONE
+            } else {
+                postLikersGroup.isVisible = true
+                val firstLikedAvatarUrl = likersList.first().avatar
+                firstLikedAvatar.loadCircleCrop(firstLikedAvatarUrl)
+                toText(likersList, likedUsers)
             }
 
             menu.setOnClickListener {
@@ -180,8 +269,14 @@ class EventViewHolder(
                     })
             }
 
-            eventUsersGroup.setOnClickListener {
-                listener.loadEventUsersList(event)
+            speakersUser.setOnClickListener {
+                listener.onViewSpeakers(event)
+            }
+            participates.setOnClickListener {
+                listener.onViewParticipates(event)
+            }
+            postLikersGroup.setOnClickListener {
+                listener.onViewLikeOwner(event)
             }
         }
     }
