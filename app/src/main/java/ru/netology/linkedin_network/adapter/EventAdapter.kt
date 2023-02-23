@@ -43,11 +43,11 @@ interface OnEventInteractionListener {
 }
 
 class EventAdapter(
-    private val onInteractionListener: OnEventInteractionListener,
+    private val listener: OnEventInteractionListener,
 ) : PagingDataAdapter<Event, EventViewHolder>(EventDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding, onInteractionListener)
+        return EventViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {

@@ -23,14 +23,10 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.dto.Post.Companion.emptyPost
-import ru.netology.linkedin_network.enumeration.SeparatorTimeType
-import ru.netology.linkedin_network.utils.CurrentTimes
 import java.io.File
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.random.Random
 
 
 private val mentions = mutableListOf<User>()
@@ -75,39 +71,13 @@ class PostViewModel @Inject constructor(
     private val cached
         get() = repository.data.cachedIn(viewModelScope)
 
-    val data: Flow<PagingData<FeedItem>> = appAuth
+    val data: Flow<PagingData<Post>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
-                pagingData.insertSeparators(
-                    generator = { before, after ->
-                        val beforeTime = CurrentTimes.getDaySeparatorType(before?.published?.toLong())
-                        val afterTime = CurrentTimes.getDaySeparatorType(after?.published?.toLong())
-
-                        val text = when {
-                            beforeTime == SeparatorTimeType.NULL && afterTime == SeparatorTimeType.TODAY ->
-                                context.getString(R.string.today)
-
-                            beforeTime == SeparatorTimeType.TODAY && afterTime == SeparatorTimeType.YESTERDAY ->
-                                context.getString(R.string.yesterday)
-
-                            beforeTime == SeparatorTimeType.YESTERDAY && afterTime == SeparatorTimeType.MORE_OLD ->
-                                context.getString(R.string.more_old)
-
-                            else -> null
-                        }
-                        text?.let { TextItemSeparator(Random.nextInt(), it) } ?: run { null }
+                pagingData.filter { post ->
+                     !hidePosts.contains(post.id)
                     }
-                ).filter { feedItem ->
-                    when (feedItem) {
-                        is Post -> {
-                            !hidePosts.contains(feedItem.id)
-                        }
-                        else -> {
-                            true
-                        }
-                    }
-                }
                 pagingData.map {
                     it.copy(ownedByMe = it.authorId == myId)
                 }

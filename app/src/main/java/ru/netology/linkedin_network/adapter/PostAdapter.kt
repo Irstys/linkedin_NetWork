@@ -24,7 +24,6 @@ import ru.netology.linkedin_network.view.loadCircleCrop
 import com.google.android.exoplayer2.MediaItem
 import com.yandex.mapkit.geometry.Point
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import ru.netology.linkedin_network.databinding.CardTextItemSeparatorBinding
 import ru.netology.linkedin_network.dto.*
 import ru.netology.linkedin_network.utils.toText
 
@@ -42,39 +41,22 @@ interface OnPostInteractionListener {
 
 class FeedAdapter(
     private val listener: OnPostInteractionListener,
-) : PagingDataAdapter<FeedItem, RecyclerView.ViewHolder>(FeedDiffCallback()) {
-    override fun getItemViewType(position: Int): Int =
-        when (getItem(position)) {
-            is Post -> R.layout.card_post
-            is TextItemSeparator -> R.layout.card_text_item_separator
-            else -> error("unknow item type")
-        }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        when (viewType) {
-            R.layout.card_post -> {
-                val binding =
-                    CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                PostViewHolder(binding,
-                    listener)
-            }
-            R.layout.card_text_item_separator -> {
-                val binding =
-                    CardTextItemSeparatorBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-                TextItemViewHolder(binding)
-            }
-            else -> error("unknow item type $viewType")
-        }
+) : PagingDataAdapter<Post, PostViewHolder>(FeedDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return  PostViewHolder(binding,listener)
+    }
+    override fun onBindViewHolder(holder:PostViewHolder, position: Int) {
+        val post = getItem(position) ?: return
+        holder.bind(post)
+    }
+
     override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
+        holder: PostViewHolder,
         position: Int,
         payloads: MutableList<Any>,
     ) {
-        when (val item = getItem(position)) {
-            is Post -> (holder as? PostViewHolder)?.bind(item)
-            is TextItemSeparator -> ((holder as? TextItemViewHolder)?.bind(item))
-            else -> error("unknow item type")
-        }
-        if (holder is PostViewHolder) {
             payloads.forEach {
                 if (it is Payload) {
                     holder.bind(it)
@@ -82,24 +64,8 @@ class FeedAdapter(
             }
             onBindViewHolder(holder, position)
         }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (val item = getItem(position)) {
-            is Post -> (holder as? PostViewHolder)?.bind(item)
-            is TextItemSeparator -> ((holder as? TextItemViewHolder)?.bind(item))
-            else -> error("unknow item type")
-        }
-    }
 }
 
-class TextItemViewHolder(
-    private val binding: CardTextItemSeparatorBinding,
-) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(textItemSeparator: TextItemSeparator) {
-        binding.text.text = textItemSeparator.text
-    }
-}
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val listener: OnPostInteractionListener,
@@ -277,19 +243,19 @@ class PostViewHolder(
     }
 }
 
-class FeedDiffCallback : DiffUtil.ItemCallback<FeedItem>() {
-    override fun areItemsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
+class FeedDiffCallback : DiffUtil.ItemCallback<Post>() {
+    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
         if (oldItem::class != newItem::class) {
             return false
         }
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
+    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem == newItem
     }
 
-    override fun getChangePayload(oldItem: FeedItem, newItem: FeedItem): Any {
+    override fun getChangePayload(oldItem: Post, newItem: Post): Any {
         return if (oldItem::class != newItem::class) {
         } else if (oldItem is Post && newItem is Post) {
             Payload(
