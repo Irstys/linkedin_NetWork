@@ -132,10 +132,10 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun likePostById(id: Int) {
+    fun likePost(post: Post) {
         viewModelScope.launch {
             try {
-                _Post.postValue(repository.likePostById(id))
+                _Post.postValue(repository.likePost(post))
                 _dataState.value = FeedModelState()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
@@ -143,16 +143,6 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun dislikePostById(id: Int) {
-        viewModelScope.launch {
-            try {
-                _Post.postValue(repository.dislikePostById(id))
-                _dataState.value = FeedModelState()
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
-    }
 
     fun getPostRequest(id: Int) {
         mentionsData.postValue(mentions)

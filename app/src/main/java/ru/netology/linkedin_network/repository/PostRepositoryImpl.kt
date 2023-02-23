@@ -107,29 +107,34 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun likePostById(id: Int): Post {
+    override suspend fun likePost(post: Post): Post {
+            var newPost: Post?
+            if (post.likedByMe) {
+                return disLike(post)
+        }
         try {
-            val response = apiService.likePostById(id)
+            val response = apiService.likePost(post.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(PostEntity.fromDto(body))
-            return body
+            newPost = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(newPost))
+            return newPost
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun dislikePostById(id: Int): Post {
+    private suspend fun disLike(post: Post): Post {
+        var newPost:Post?
         try {
-            val response = apiService.dislikePostById(id)
+            val response = apiService.dislikePost(post.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(PostEntity.fromDto(body))
-            return body
+            newPost = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(newPost))
+            return newPost
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -197,16 +202,7 @@ class PostRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             } else {
-                val body =
-                    response.body() ?: throw ApiError(response.code(), response.message())
-                return Post(
-                    id = body.id,
-                    content = body.content,
-                    coordinates = body.coordinates,
-                    link = body.link,
-                    attachment = body.attachment,
-                    mentionIds = body.mentionIds
-                )
+                return response.body() ?: throw ApiError(response.code(), response.message())
             }
         } catch (e: IOException) {
             throw NetworkError

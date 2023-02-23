@@ -16,9 +16,8 @@ interface PostRepository {
     suspend fun getMentions(post: Post)
     suspend fun getLikers(post: Post)
     suspend fun removePostById(id: Int)
-    suspend fun likePostById(id: Int): Post
-    suspend fun dislikePostById(id: Int): Post
-    suspend fun getPostById(id: Int): Post
+    suspend fun likePost(post: Post): Post
+     suspend fun getPostById(id: Int): Post
     suspend fun getUsers(): List<User>
     suspend fun getPostRequest(id: Int): Post
     suspend fun getUserById(id: Int): User

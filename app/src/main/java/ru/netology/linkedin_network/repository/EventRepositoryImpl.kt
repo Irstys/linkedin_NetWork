@@ -128,57 +128,67 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeEventById(id: Int): Event {
+    override suspend fun likeEvent(event: Event): Event {
+        var newEvent: Event?
+        if (event.likedByMe) {
+            return disLike(event)
+        }
         try {
-            val response = apiService.likeEventById(id)
+            val response = apiService.likeEvent(event.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(EventEntity.fromDto(body))
-            return body
+            newEvent = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(EventEntity.fromDto(newEvent))
+            return newEvent
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun dislikeEventById(id: Int): Event {
+    private suspend fun disLike(event: Event): Event {
+        var newEvent: Event?
         try {
-            val response = apiService.dislikeEventById(id)
+            val response = apiService.dislikeEvent(event.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(EventEntity.fromDto(body))
-            return body
+            newEvent = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(EventEntity.fromDto(newEvent))
+            return newEvent
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun participateInEvent(id: Int): Event {
+    override suspend fun join(event: Event): Event {
+        var newEvent: Event?
+        if (event.participatedByMe) {
+            return quit(event)
+        }
         try {
-            val response = apiService.participateInEvent(id)
+            val response = apiService.join(event.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(EventEntity.fromDto(body))
-            return body
+            newEvent= response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(EventEntity.fromDto(newEvent))
+            return newEvent
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun quitParticipateInEvent(id: Int): Event {
+    private suspend fun quit(event: Event): Event {
+        var newEvent: Event?
         try {
-            val response = apiService.quitParticipateInEvent(id)
+            val response = apiService.quitjoin(event.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(EventEntity.fromDto(body))
-            return body
+            newEvent = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(EventEntity.fromDto(newEvent))
+            return newEvent
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -247,17 +257,8 @@ class EventRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             } else {
-                val body = response.body() ?: throw ApiError(response.code(), response.message())
-                return Event(
-                    id = body.id,
-                    content = body.content,
-                    datetime = body.datetime,
-                    coordinates = body.coordinates,
-                    type = body.type,
-                    attachment = body.attachment,
-                    link = body.link,
-                    speakerIds = body.speakerIds
-                )
+                return response.body() ?: throw ApiError(response.code(), response.message())
+
             }
         } catch (e: IOException) {
             throw NetworkError

@@ -18,10 +18,8 @@ interface EventRepository {
     suspend fun getParticipates(event: Event)
     suspend fun getLikers(event: Event)
     suspend fun removeById(id: Int)
-    suspend fun likeEventById(id: Int): Event
-    suspend fun dislikeEventById(id: Int): Event
-    suspend fun participateInEvent(id: Int): Event
-    suspend fun quitParticipateInEvent(id: Int): Event
+    suspend fun likeEvent(event: Event): Event
+    suspend fun join(event: Event): Event
     suspend fun getEventById(id: Int): Event
     suspend fun getUsers(): List<User>
     suspend fun addMediaToEvent(type: AttachmentType, file: MultipartBody.Part): Attachment

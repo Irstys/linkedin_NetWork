@@ -56,10 +56,10 @@ interface   ApiService {
     suspend fun removePostById(@Path("id") id: Int): Response<Unit>
 
     @POST("posts/{id}/likes")
-    suspend fun likePostById(@Path("id") id: Int): Response<Post>
+    suspend fun likePost(@Path("id") id: Int): Response<Post>
 
     @DELETE("posts/{id}/likes")
-    suspend fun dislikePostById(@Path("id") id: Int): Response<Post>
+    suspend fun dislikePost(@Path("id") id: Int): Response<Post>
 
     @GET("posts/{post_id}")
     suspend fun getPostById(@Path("post_id") id: Int): Response<Post>
@@ -118,16 +118,16 @@ interface   ApiService {
     suspend fun removeById(@Path("id") id: Int): Response<Unit>
 
     @POST("events/{id}/likes")
-    suspend fun likeEventById(@Path("id") id: Int): Response<Event>
+    suspend fun likeEvent(@Path("id") id: Int): Response<Event>
 
     @DELETE("events/{id}/likes")
-    suspend fun dislikeEventById(@Path("id") id: Int): Response<Event>
+    suspend fun dislikeEvent(@Path("id") id: Int): Response<Event>
 
     @POST("events/{id}/participants")
-    suspend fun participateInEvent(@Path("id") id: Int): Response<Event>
+    suspend fun join(@Path("id") id: Int): Response<Event>
 
     @DELETE("events/{id}/participants")
-    suspend fun quitParticipateInEvent(@Path("id") id: Int): Response<Event>
+    suspend fun quitjoin(@Path("id") id: Int): Response<Event>
 
     @POST("events")
     suspend fun saveEvent(@Body post: Event): Response<Event>

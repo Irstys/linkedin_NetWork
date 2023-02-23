@@ -32,7 +32,7 @@ import ru.netology.linkedin_network.utils.toText
 interface OnEventInteractionListener {
     fun onLike(event: Event) {}
     fun onShare(event: Event) {}
-    fun onParticipateInEvent(event: Event) {}
+    fun onjoin(event: Event) {}
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
     fun loadEventUsersList(event: Event) {}
@@ -212,10 +212,9 @@ class EventViewHolder(
             }
 
             if (event.speakerIds!!.isEmpty()) {
-                speakersUser.visibility = View.INVISIBLE
+                speakers.text = ""
             } else {
-                speakersUser.isVisible = true
-                speakersUser.text = numbersToString(speakerslist.size )
+                speakers.text = numbersToString(speakerslist.size )
             }
             if (event.likeOwnerIds!!.isEmpty()) {
                 postLikersGroup.visibility = View.GONE
@@ -253,7 +252,7 @@ class EventViewHolder(
                 listener.onShare(event)
             }
             participate.setOnClickListener {
-                listener.onParticipateInEvent(event)
+                listener.onjoin(event)
             }
 
             image.setOnClickListener {
@@ -269,7 +268,7 @@ class EventViewHolder(
                     })
             }
 
-            speakersUser.setOnClickListener {
+            speakers.setOnClickListener {
                 listener.onViewSpeakers(event)
             }
             participates.setOnClickListener {
@@ -289,5 +288,17 @@ class EventDiffCallback : DiffUtil.ItemCallback<Event>() {
 
     override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
         return oldItem == newItem
+    }
+    override fun getChangePayload(oldItem: Event, newItem: Event): Any {
+        return if (oldItem::class != newItem::class) {
+        } else if (oldItem is Event && newItem is Event) {
+            Payload(
+                liked = newItem.likedByMe.takeIf { oldItem.likedByMe != it },
+                join = newItem.participatedByMe.takeIf { oldItem.participatedByMe != it },
+                content = newItem.content.takeIf { oldItem.content != it },
+            )
+        } else {
+
+        }
     }
 }

@@ -133,40 +133,21 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun likeEventById(id: Int) {
+    fun likeEvent(event: Event){
         viewModelScope.launch {
             try {
-                _Event.postValue(repository.likeEventById(id))
+                _Event.postValue(repository.likeEvent(event))
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
         }
     }
 
-    fun dislikeEventById(id: Int) {
-        viewModelScope.launch {
-            try {
-                _Event.postValue(repository.dislikeEventById(id))
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
-    }
 
-    fun participateInEvent(id: Int) {
+    fun join(event: Event) {
         viewModelScope.launch {
             try {
-                _Event.postValue(repository.participateInEvent(id))
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
-    }
-
-    fun quitParticipateInEvent(id: Int) {
-        viewModelScope.launch {
-            try {
-                _Event.postValue(repository.quitParticipateInEvent(id))
+                _Event.postValue(repository.join(event))
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
