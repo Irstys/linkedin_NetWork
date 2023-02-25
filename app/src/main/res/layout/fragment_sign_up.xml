@@ -23,7 +23,7 @@
             android:layout_marginTop="@dimen/commonSpacingSmall"
             android:text="@string/sign_up"
             android:layout_gravity="center_horizontal|bottom"
-            android:textSize="@dimen/textMaximumSize"
+            android:textSize="@dimen/textMMaxSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

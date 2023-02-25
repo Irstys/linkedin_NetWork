@@ -24,7 +24,7 @@
             android:layout_marginTop="@dimen/commonSpacingSmall"
             android:gravity="center"
             android:text="@string/sign_in"
-            android:textSize="@dimen/textMaximumSize"
+            android:textSize="@dimen/textMMaxSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
