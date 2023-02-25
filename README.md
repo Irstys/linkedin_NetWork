@@ -34,7 +34,7 @@ Hilt
 ImagePicker, Glide, Intent
 
 Авторизация:
-
+![Авторизация](https://myoctocat.com/assets/images/base-octocat.svg)
 
 
 
