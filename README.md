@@ -46,7 +46,7 @@ ImagePicker, Glide, Intent
 
 Пофиль:
 
-![Alt text](/screenshots/profile.jpg?raw=true "Пофиль)
+![Alt text](/screenshots/profile.jpg?raw=true "Пофиль")
 
 
 Пользователи (список):
