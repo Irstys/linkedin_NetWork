@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore.Video
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import ru.netology.linkedin_network.adapter.CreatePageUsersListInteractionListen
 import ru.netology.linkedin_network.databinding.FragmentNewPostBinding
 import ru.netology.linkedin_network.enumeration.AttachmentType.*
 import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
-import ru.netology.linkedin_network.ui.post.PostFeedFragment.Companion.intArg
 import ru.netology.linkedin_network.viewmodel.PostViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
@@ -32,7 +32,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.linkedin_network.ui.ProfileFragment.Companion.textArg
-import ru.netology.linkedin_network.utils.StringArg
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -222,6 +221,7 @@ class NewPostFragment : Fragment() {
             } else {
                 viewModel.isPostIntent = true
                 findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
+                Log.d("PostNew",  viewModel.newPost.value?.coordinates.toString())
             }
         }
 
@@ -229,7 +229,7 @@ class NewPostFragment : Fragment() {
             val latitude = viewModel.newPost.value?.coordinates!!.latitude
             val longitude = viewModel.newPost.value?.coordinates!!.longitude
             val coordinates = "$latitude, $longitude"
-            binding.addCoordinates.setText(coordinates)
+            binding.addCoordinates.text = coordinates
         } else {
             binding.addCoordinates.text = null
         }
@@ -268,6 +268,7 @@ class NewPostFragment : Fragment() {
         }
 
         binding.save.setOnClickListener {
+            Log.d("PostNew",  viewModel.cords.value.toString())
             val content = binding.edit.text.toString()
             if (content == "") {
                 Snackbar.make(binding.root, R.string.empty_content_error, Snackbar.LENGTH_SHORT).show()

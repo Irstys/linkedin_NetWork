@@ -12,6 +12,7 @@ import ru.netology.linkedin_network.error.NetworkError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
+import ru.netology.linkedin_network.error.UnknownError
 import ru.netology.linkedin_network.repository.mediator.PostRemoteMediator
 import java.io.IOException
 import javax.inject.Inject
@@ -32,10 +33,25 @@ class PostRepositoryImpl @Inject constructor(
             it.map(PostEntity::toDto)
         }
 
+
     override val postUsersData: MutableLiveData<List<UserPreview>> = MutableLiveData(emptyList())
     override val postLikersData: MutableLiveData<List<UserPreview>> = MutableLiveData(emptyList())
     override val postMentionsData: MutableLiveData<List<UserPreview>> = MutableLiveData(emptyList())
+    override suspend fun getAll() {
+        try {
+            val response = apiService.getAllPost()
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.message())
+            }
+            val posts = response.body() ?: throw RuntimeException("body is null")
 
+            dao.insert(posts.map(PostEntity.Companion::fromDto))
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
     override suspend fun getLikedAndMentionedUsersList(post: Post) {
         try {
             val response = apiService.getPostById(post.id)
@@ -141,17 +157,7 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPostById(id: Int): Post {
-        try {
-            val response = apiService.getPostById(id)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-            return response.body() ?: throw ApiError(response.code(), response.message())
-        } catch (e: IOException) {
-            throw NetworkError
-        }
-    }
+
 
     override suspend fun addMediaToPost(
         type: AttachmentType,
@@ -197,19 +203,17 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPostRequest(id: Int): Post {
+    override suspend fun getPostById(id: Int): Post {
         try {
             val response = apiService.getPostById(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
-            } else {
-                return response.body() ?: throw ApiError(response.code(), response.message())
             }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }
     }
-
     override suspend fun getUserById(id: Int): User {
         try {
             val response = apiService.getUserById(id)
@@ -222,5 +226,4 @@ class PostRepositoryImpl @Inject constructor(
             throw NetworkError
         }
     }
-
 }

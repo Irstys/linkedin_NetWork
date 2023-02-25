@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -236,6 +237,7 @@ class NewEventFragment : Fragment() {
             } else {
                 viewModel.isEventIntent = true
                 findNavController().navigate(R.id.action_newEventFragment_to_mapsFragment)
+                Log.d("Event",  viewModel.cords.value.toString())
             }
         }
 
@@ -243,7 +245,8 @@ class NewEventFragment : Fragment() {
             val latitude = viewModel.newEvent.value?.coordinates!!.latitude
             val longitude = viewModel.newEvent.value?.coordinates!!.longitude
             val coordinates = "$latitude, $longitude"
-            binding.addCoordinates.setText(coordinates)
+            binding.addCoordinates.text = coordinates
+            Log.d("Event",  viewModel.cords.value.toString())
         } else {
             binding.addCoordinates.text = null
         }
@@ -289,6 +292,7 @@ class NewEventFragment : Fragment() {
             val content = binding.edit.text.toString()
             val datetime = binding.addDateTime.text.toString()
             viewModel.addDateAndTime(datetime)
+            viewModel.cords.value?.let { cords -> viewModel.addcoordinates(cords) }
             val event = viewModel.newEvent.value!!.copy(content = content)
             if (content == "" || datetime == "") {
                 Snackbar.make(binding.root, R.string.empty_content_error, Snackbar.LENGTH_SHORT).show()

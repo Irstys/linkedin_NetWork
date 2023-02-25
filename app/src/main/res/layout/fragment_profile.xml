@@ -33,16 +33,16 @@
 
                     <ImageView
                         android:id="@+id/avatar"
-                        android:layout_width="@dimen/commonSpacingLarge"
-                        android:layout_height="@dimen/commonSpacingLarge"
+                        android:layout_width="@dimen/commonSpacingXSLarge"
+                        android:layout_height="@dimen/commonSpacingXSLarge"
                         android:contentDescription="@string/avatar_user"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:layout_editor_absoluteX="16dp"
-                        tools:layout_editor_absoluteY="16dp"
+                        android:padding="@dimen/commonSpacingSmall"
                         tools:srcCompat="@tools:sample/avatars"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="@dimen/commonSpacingLarge"
                         android:layout_marginTop="@dimen/commonSpacingMedium"/>
+
 
                     <TextView
                         android:id="@+id/name"
@@ -51,10 +51,10 @@
                         android:text="@string/user_name"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/avatar"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="@dimen/commonSpacingSmall"/>
+                        app:layout_constraintTop_toTopOf="@+id/avatar"
+                        app:layout_constraintStart_toEndOf="@+id/avatar"
+                        app:layout_constraintBottom_toBottomOf="@id/avatar"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -63,10 +63,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="100dp"
                         android:orientation="horizontal"
+                        android:scrollbars="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/name"
+                        app:layout_constraintTop_toBottomOf="@id/avatar"
                         tools:listitem="@layout/card_job"
                         android:padding="@dimen/commonSpacingSmall"/>
 

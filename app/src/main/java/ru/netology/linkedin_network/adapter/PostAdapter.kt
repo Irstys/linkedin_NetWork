@@ -20,6 +20,7 @@ import ru.netology.linkedin_network.view.load
 import ru.netology.linkedin_network.view.loadCircleCrop
 import com.google.android.exoplayer2.MediaItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.netology.linkedin_network.databinding.CardAdBinding
 import ru.netology.linkedin_network.dto.*
 import ru.netology.linkedin_network.utils.toText
 
@@ -37,31 +38,62 @@ interface OnPostInteractionListener {
 
 class FeedAdapter(
     private val listener: OnPostInteractionListener,
-) : PagingDataAdapter<Post, PostViewHolder>(FeedDiffCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return  PostViewHolder(binding,listener)
-    }
-    override fun onBindViewHolder(holder:PostViewHolder, position: Int) {
-        val post = getItem(position) ?: return
-        holder.bind(post)
+) : PagingDataAdapter<FeedItem, RecyclerView.ViewHolder>(FeedDiffCallback()) {
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is Ad -> R.layout.card_ad
+            is Post -> R.layout.card_post
+            else -> error("unknow item type")
+        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
+            R.layout.card_post -> {
+                val binding =
+                    CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                PostViewHolder(binding, listener)
+            }
+            R.layout.card_ad -> {
+                val binding =
+                    CardAdBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                AdViewHolder(binding)
+            }
+            else -> error("unknow item type $viewType")
+        }
+    override fun onBindViewHolder(holder:RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position)) {
+            is Ad -> (holder as? AdViewHolder)?.bind(item)
+            is Post -> (holder as? PostViewHolder)?.bind(item)
+            else -> error("unknow item type")
+        }
     }
 
     override fun onBindViewHolder(
-        holder: PostViewHolder,
+        holder: RecyclerView.ViewHolder,
         position: Int,
         payloads: MutableList<Any>,
     ) {
+        when (val item = getItem(position)) {
+        is Ad -> (holder as? AdViewHolder)?.bind(item)
+        is Post -> (holder as? PostViewHolder)?.bind(item)
+        else -> error("unknow item type")
+    }
+        if (holder is PostViewHolder) {
             payloads.forEach {
                 if (it is Payload) {
                     holder.bind(it)
                 }
             }
+        }
             onBindViewHolder(holder, position)
         }
 }
-
+class AdViewHolder(
+    private val binding: CardAdBinding,
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(ad: Ad) {
+        binding.imageAd.load(ad.name)
+    }
+}
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val listener: OnPostInteractionListener,
@@ -148,11 +180,10 @@ class PostViewHolder(
             content.text = postText
             like.isChecked = post.likedByMe
 
-            if (post.coordinates != null) {
-                coordinates.isVisible = true
-                coordinates.setOnClickListener { listener.onMap(post)}
-            }
-
+            if (post.coordinates == null) {
+                coordinates.visibility = View.INVISIBLE
+             }
+            coordinates.setOnClickListener { listener.onMap(post)}
             mentionedMe.isVisible = post.mentionedMe
             menu.isVisible = post.ownedByMe
 
@@ -161,16 +192,14 @@ class PostViewHolder(
             val mentorslist = mutableListOf<UserPreview>()
             val likersList =mutableListOf<UserPreview>()
 
-            if (usersList != null) {
-                for ((key, value) in usersList) {
-                    if (post.likeOwnerIds.contains(key)){
-                        value.isLiked = true
-                        likersList.add(value)
-                    }
-                    if (post.mentionIds.contains(key)) {
-                        value.isMentioned = true
-                        mentorslist.add(value)
-                    }
+            for ((key, value) in usersList) {
+                if (post.likeOwnerIds.contains(key)){
+                    value.isLiked = true
+                    likersList.add(value)
+                }
+                if (post.mentionIds.contains(key)) {
+                    value.isMentioned = true
+                    mentorslist.add(value)
                 }
             }
             val job = post.authorJob
@@ -179,7 +208,7 @@ class PostViewHolder(
                 placeWork.text = job
             }else { placeWork.isVisible = false}
 
-            if (post.mentionIds!!.isEmpty()) {
+            if (post.mentionIds.isEmpty()) {
                 postUsersGroup.visibility = View.INVISIBLE
             } else {
                 postUsersGroup.isVisible = true
@@ -187,7 +216,7 @@ class PostViewHolder(
                 firstUserAvatar.loadCircleCrop(firstUserAvatarUrl)
                 toText(mentorslist, users)
             }
-            if (post.likeOwnerIds!!.isEmpty()) {
+            if (post.likeOwnerIds.isEmpty()) {
                 postLikersGroup.visibility = View.INVISIBLE
             } else {
                 postLikersGroup.isVisible = true
@@ -237,23 +266,28 @@ class PostViewHolder(
     }
 }
 
-class FeedDiffCallback : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+class FeedDiffCallback : DiffUtil.ItemCallback<FeedItem>() {
+    override fun areItemsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
         if (oldItem::class != newItem::class) {
             return false
         }
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+    override fun areContentsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
         return oldItem == newItem
     }
 
-    override fun getChangePayload(oldItem: Post, newItem: Post): Any {
-        return Payload(
+    override fun getChangePayload(oldItem: FeedItem, newItem: FeedItem): Any {
+        return if (oldItem::class != newItem::class) {
+        } else if (oldItem is Post && newItem is Post) {
+            Payload(
                 liked = newItem.likedByMe.takeIf { oldItem.likedByMe != it },
                 content = newItem.content.takeIf { oldItem.content != it },
             )
+        } else {
+
+        }
     }
 }
 

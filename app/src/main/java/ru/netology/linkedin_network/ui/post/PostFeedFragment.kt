@@ -74,7 +74,7 @@ class PostFeedFragment : Fragment() {
 
             override fun onEdit(post: Post) {
                 if (authViewModel.authenticated) {
-                    viewModel.getPostRequest(post.id)
+                    viewModel.getPostById(post.id)
                 findNavController().navigate(
                     R.id.action_postFeedFragment_to_editPostFragment,
                     Bundle().apply { intArg = post.id })

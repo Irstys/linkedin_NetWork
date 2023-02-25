@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore.Video
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +63,7 @@ class EditPostFragment : Fragment() {
         }
 
                 val id = requireArguments().intArg
-                 viewModel.getPostRequest(id)
+                 viewModel.getPostById(id)
                 println(viewModel.newPost)
 
 
@@ -228,6 +229,7 @@ class EditPostFragment : Fragment() {
             } else {
                 viewModel.isPostIntent = true
                 findNavController().navigate(R.id.action_editPostFragment_to_mapsFragment)
+                Log.d("Post",  viewModel.newPost.value?.coordinates.toString())
             }
         }
 
@@ -236,6 +238,8 @@ class EditPostFragment : Fragment() {
             val longitude = viewModel.newPost.value?.coordinates!!.longitude
             val coordinates = "$latitude, $longitude"
             binding.addCoordinates.text = coordinates
+            val point = Point(latitude.toDouble(),longitude.toDouble())
+            viewModel.addcoordinates(point)
         } else {
             binding.addCoordinates.text = null
         }
@@ -274,6 +278,7 @@ class EditPostFragment : Fragment() {
         }
 
         binding.save.setOnClickListener {
+            Log.d("Post",  viewModel.cords.value.toString())
             val content = binding.edit.text.toString()
             if (content == "") {
                 Snackbar.make(binding.root, R.string.empty_content_error, Snackbar.LENGTH_SHORT).show()

@@ -1,6 +1,7 @@
 package ru.netology.linkedin_network.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,10 +24,11 @@ import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import ru.netology.linkedin_network.dto.Post.Companion.emptyPost
 import java.io.File
+import kotlin.random.Random
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-
+private val adUrl = "https://ik.imagekit.io/jwudrxfj5ek/073d2310-df37-41e7-8d99-2b8d9c4cd8e5._AwQCvKQES.png"
 private val mentions = mutableListOf<User>()
 
 private val noMedia = MediaModel()
@@ -57,10 +59,14 @@ class PostViewModel @Inject constructor(
     val postUsersData: LiveData<List<UserPreview>> = repository.postUsersData
     val mentorslist: LiveData<List<UserPreview>> = repository.postMentionsData
     val likersList: LiveData<List<UserPreview>> = repository.postLikersData
-
+    private val emptyCords = Point()
     var isPostIntent = false
 
-    val newPost: MutableLiveData<Post> = MutableLiveData(emptyPost)
+    private val _cords = MutableLiveData<Point>(emptyCords)
+    val cords: LiveData<Point>
+        get() = _cords
+
+      val newPost: MutableLiveData<Post> = MutableLiveData(emptyPost)
     val usersList: MutableLiveData<List<User>> = MutableLiveData()
     val mentionsData: MutableLiveData<MutableList<User>> = MutableLiveData()
 
@@ -68,16 +74,27 @@ class PostViewModel @Inject constructor(
     private val cached
         get() = repository.data.cachedIn(viewModelScope)
 
-    val data: Flow<PagingData<Post>> = appAuth
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val data: Flow<PagingData<FeedItem>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
+                pagingData.insertSeparators(
+                    generator = { before, _ ->
+                        if (before?.id?.rem(5) == 0) {
+                            Ad(Random.nextInt(),adUrl)
+                        } else {
+                            null
+                        }
+                    })
                 pagingData.map {
                     it.copy(ownedByMe = it.authorId == myId)
                 }
 
             }
         }
+
+
     fun getLikedAndMentionedUsersList(post: Post) {
         viewModelScope.launch {
             try {
@@ -132,11 +149,11 @@ class PostViewModel @Inject constructor(
     }
 
 
-    fun getPostRequest(id: Int) {
+    fun getPostById(id: Int) {
         mentionsData.postValue(mentions)
         viewModelScope.launch {
             try {
-                newPost.value = repository.getPostRequest(id)
+                newPost.value = repository.getPostById(id)
                 newPost.value?.mentionIds?.forEach {
                     mentionsData.value!!.add(repository.getUserById(it))
                 }
@@ -197,11 +214,12 @@ class PostViewModel @Inject constructor(
     }
 
     fun addcoordinates(point: Point) {
+        _cords.value=point
         val coordinates = Coordinates(
             ((point.latitude * 1000000.0).roundToInt() / 1000000.0).toString(),
             ((point.longitude * 1000000.0).roundToInt() / 1000000.0).toString()
         )
-        newPost.value = newPost.value?.copy(coordinates = coordinates)
+        this.newPost.value = newPost.value?.copy(coordinates = coordinates)
         isPostIntent = false
     }
 
@@ -218,11 +236,16 @@ class PostViewModel @Inject constructor(
     }
 
     fun savePost(content: String) {
+        cords.value?.let { addcoordinates(it) }
+        Log.d("Post", newPost.value.toString())
         newPost.value = newPost.value?.copy(content = content)
+        Log.d("Post1", newPost.value.toString())
         val post = newPost.value!!
         viewModelScope.launch {
             try {
                 repository.savePost(post)
+                Log.d("Post1", newPost.value.toString())
+                Log.d("Post1", post.toString())
                 _dataState.value = FeedModelState(error = false)
                 deleteEditPost()
                 _editedPost.value = Unit
@@ -250,6 +273,7 @@ class PostViewModel @Inject constructor(
     fun deleteEditPost() {
         newPost.value = emptyPost
         mentions.clear()
+        _cords.value = emptyCords
         mentionsData.postValue(mentions)
     }
 

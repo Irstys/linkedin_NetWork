@@ -51,6 +51,11 @@ class EventViewModel @Inject constructor(
     private val _Eventd = SingleLiveEvent<Unit>()
     val Eventd: LiveData<Unit>
         get() = _Eventd
+    private val emptyCords = Point()
+    private val _cords = MutableLiveData<Point>(emptyCords)
+    val cords: LiveData<Point>
+        get() = _cords
+
 
     private val _media = MutableLiveData(noMedia)
     val media: LiveData<MediaModel>
@@ -219,6 +224,7 @@ class EventViewModel @Inject constructor(
     }
 
         fun addcoordinates(point: Point) {
+            _cords.value=point
             val coordinates = Coordinates(
                 ((point.latitude * 1000000.0).roundToInt() / 1000000.0).toString(),
                 ((point.longitude * 1000000.0).roundToInt() / 1000000.0).toString()

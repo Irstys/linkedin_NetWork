@@ -27,11 +27,13 @@ import ru.netology.linkedin_network.viewmodel.AuthViewModel
 import ru.netology.linkedin_network.viewmodel.PostViewModel
 import ru.netology.linkedin_network.viewmodel.UserProfileViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import ru.netology.linkedin_network.databinding.FragmentProfileBinding
+import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -81,7 +83,7 @@ class ProfileFragment : Fragment() {
         binding.jobList.adapter = jobAdapter
 
         userProfileViewModel.jobData.observe(viewLifecycleOwner) {
-            if (authViewModel.authenticated && arguments == null) {
+           if (authViewModel.authenticated && arguments == null) {
                 it.forEach { job ->
                     job.ownedByMe = true
                 }
@@ -185,7 +187,13 @@ class ProfileFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
             }}
-
+            override fun onMap(post: Post){
+                findNavController().navigate(R.id.action_postFeedFragment_to_mapsFragment,
+                    Bundle().apply {
+                        Point(
+                            post.coordinates?.latitude!!.toDouble(), post.coordinates.longitude.toDouble()
+                        ).also { pointArg = it }
+                    })}
         })
 
         binding.postList.adapter = feedAdapter.withLoadStateHeaderAndFooter(
@@ -211,7 +219,10 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             println(postViewModel.data.toString())
                 val data = postViewModel.data.map {
-                    it.filter { it.authorId == userId
+                    it.filter {when (it){
+                       is Post ->  it.authorId == userId
+                       else -> false
+                    }
                         }
                     }
                 data.collectLatest {

@@ -33,9 +33,6 @@ interface   ApiService {
         @Field("file") file: MultipartBody.Part?
     ): Response<AuthState>
 
-    @POST("users/push-tokens")
-    suspend fun saveToken(@Body pushToken: Token): Response<Unit>
-
     //Медиа
     @Multipart
     @POST("media")
@@ -134,4 +131,5 @@ interface   ApiService {
 
     @GET("events/{event_id}")
     suspend fun getEventById(@Path("event_id") id: Int): Response<Event>
+
 }

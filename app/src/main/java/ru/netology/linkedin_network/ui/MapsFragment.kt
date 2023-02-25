@@ -3,6 +3,7 @@ package ru.netology.linkedin_network.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,6 +95,8 @@ class MapsFragment : Fragment() {
                 ).setAction(R.string.add)
                 {
                     postViewModel.addcoordinates(point)
+                    Log.d("Post",  postViewModel.newPost.value?.coordinates.toString())
+                    Log.d("Post",  postViewModel.cords.value.toString())
                     findNavController().navigateUp()
                 }.show()
             }

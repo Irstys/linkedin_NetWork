@@ -12,6 +12,7 @@ interface PostRepository {
     val postUsersData: MutableLiveData<List<UserPreview>>
     val postMentionsData: MutableLiveData<List<UserPreview>>
     val postLikersData: MutableLiveData<List<UserPreview>>
+    suspend fun getAll()
     suspend fun getLikedAndMentionedUsersList(post: Post)
     suspend fun getMentions(post: Post)
     suspend fun getLikers(post: Post)
@@ -19,8 +20,8 @@ interface PostRepository {
     suspend fun likePost(post: Post): Post
      suspend fun getPostById(id: Int): Post
     suspend fun getUsers(): List<User>
-    suspend fun getPostRequest(id: Int): Post
     suspend fun getUserById(id: Int): User
     suspend fun addMediaToPost(type: AttachmentType, file: MultipartBody.Part): Attachment
     suspend fun savePost(post: Post)
+
 }
