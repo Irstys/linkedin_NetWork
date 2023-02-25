@@ -34,61 +34,42 @@ Hilt
 ImagePicker, Glide, Intent
 
 Авторизация:
-![Alt text](/screenshots/contacts.jpg?raw=true "Авторизация")
 
 
-
-
-
-
-
-Опыт работы:
-
-
-
-
-Добавление места работы:
-
-
-
-Мой профиль:
-
-
-
-Чужой профиль:
-
-
-Пользователи (список):
-
-
-
-Список постов с разными авторами (авторизация - irina):
-
-
-
-Список постов:
-
-
-
-Список событий:
-
+![Alt text](/screenshots/signIn.jpg?raw=true "Авторизация")
 
 
 Регистрация:
 
+![Alt text](/screenshots/signUp.jpg?raw=true "Регистрация")
 
 
-Редактирование поста:
+Пофиль:
+
+![Alt text](/screenshots/profile.jpg?raw=true "Пофиль)
 
 
+Пользователи (список):
 
-Редактирование события:
-
-
-
-Создание нового поста:
+![Alt text](/screenshots/contacts.jpg?raw=true "Опыт работы")
 
 
+Список постов:
 
-Создание нового события:
+![Alt text](/screenshots/posts.jpg?raw=true "Список постов")
+
+Список событий:
+
+![Alt text](/screenshots/events.jpg?raw=true "Список событий")
+
+
+Редактирование/Создание нового поста:
+
+![Alt text](/screenshots/editPost.jpg?raw=true "Новый пост")
+
+
+Редактирование/Создание нового события:
+
+![Alt text](/screenshots/editEvent.jpg?raw=true "Новое событие")
+
 
