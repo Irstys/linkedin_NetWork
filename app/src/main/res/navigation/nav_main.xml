@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_eventFeedFragment_to_eventLikersListFragment"
             app:destination="@id/eventLikersListFragment" />
+        <action
+            android:id="@+id/action_eventFeedFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
 
     <fragment
@@ -204,6 +207,13 @@
     <fragment
         android:id="@+id/editPostFragment"
         android:name="ru.netology.linkedin_network.ui.post.EditPostFragment"
-        android:label="EditPostFragment" />
+        android:label="EditPostFragment" >
+        <action
+            android:id="@+id/action_editPostFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_editPostFragment_to_choosePostUsersFragment"
+            app:destination="@id/choosePostUsersFragment" />
+    </fragment>
 
 </navigation>

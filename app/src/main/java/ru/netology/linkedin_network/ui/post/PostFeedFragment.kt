@@ -27,9 +27,11 @@ import ru.netology.linkedin_network.utils.IntArg
 import ru.netology.linkedin_network.viewmodel.AuthViewModel
 import ru.netology.linkedin_network.viewmodel.PostViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
+import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
 
 
 @ExperimentalCoroutinesApi
@@ -149,6 +151,13 @@ class PostFeedFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
             }}
+            override fun onMap(post: Post){
+                findNavController().navigate(R.id.action_postFeedFragment_to_mapsFragment,
+                    Bundle().apply {
+                        Point(
+                            post.coordinates?.latitude!!.toDouble(), post.coordinates.longitude.toDouble()
+                        ).also { pointArg = it }
+                    })}
         })
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(

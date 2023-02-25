@@ -32,7 +32,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.linkedin_network.ui.ProfileFragment.Companion.textArg
-import ru.netology.linkedin_network.utils.StringArg
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -158,8 +158,8 @@ class EditPostFragment : Fragment() {
             pickVideoLauncher.launch(intent)
         }
 
-            val pickAudioLauncher =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+       val pickAudioLauncher =
+           registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
                     val resultCode = activityResult.resultCode
                     val data = activityResult.data
 
@@ -213,7 +213,7 @@ class EditPostFragment : Fragment() {
         }
 
         binding.addMention.setOnClickListener {
-            findNavController().navigate(R.id.action_newPostFragment_to_choosePostUsersFragment)
+            findNavController().navigate(R.id.action_editPostFragment_to_choosePostUsersFragment)
         }
 
         binding.addCoordinates.setOnClickListener {
@@ -223,11 +223,11 @@ class EditPostFragment : Fragment() {
                     viewModel.newPost.value?.coordinates!!.longitude.toDouble()
                 )
                 viewModel.isPostIntent = true
-                findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment,
+                findNavController().navigate(R.id.action_editPostFragment_to_mapsFragment,
                     Bundle().apply { pointArg = point })
             } else {
                 viewModel.isPostIntent = true
-                findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
+                findNavController().navigate(R.id.action_editPostFragment_to_mapsFragment)
             }
         }
 
@@ -235,7 +235,7 @@ class EditPostFragment : Fragment() {
             val latitude = viewModel.newPost.value?.coordinates!!.latitude
             val longitude = viewModel.newPost.value?.coordinates!!.longitude
             val coordinates = "$latitude, $longitude"
-            binding.addCoordinates.setText(coordinates)
+            binding.addCoordinates.text = coordinates
         } else {
             binding.addCoordinates.text = null
         }

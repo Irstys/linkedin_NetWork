@@ -2,7 +2,6 @@ package ru.netology.linkedin_network.adapter
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +16,10 @@ import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.databinding.CardEventBinding
 import ru.netology.linkedin_network.enumeration.AttachmentType.*
 import ru.netology.linkedin_network.enumeration.EventType.*
-import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
 import ru.netology.linkedin_network.utils.Utils
 import ru.netology.linkedin_network.view.load
 import ru.netology.linkedin_network.view.loadCircleCrop
 import com.google.android.exoplayer2.MediaItem
-import com.yandex.mapkit.geometry.Point
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.linkedin_network.dto.*
 import ru.netology.linkedin_network.util.numbersToString
@@ -40,6 +36,7 @@ interface OnEventInteractionListener {
     fun onViewParticipates(event: Event) {}
     fun onViewSpeakers(event: Event) {}
     fun onViewLikeOwner(event: Event) {}
+    fun onMap(event: Event)
 }
 
 class EventAdapter(
@@ -177,8 +174,8 @@ class EventViewHolder(
             content.text = eventText
             like.isChecked = event.likedByMe
             participate.isChecked = event.participatedByMe
-            coordinates.visibility = if (event.coordinates != null) View.VISIBLE else View.INVISIBLE
-            menu.visibility = if (event.ownedByMe) View.VISIBLE else View.INVISIBLE
+            coordinates.isVisible = event.coordinates != null
+            menu.isVisible = event.ownedByMe
 
 
             val usersList = event.users
@@ -186,20 +183,18 @@ class EventViewHolder(
             val participatelist = mutableListOf<UserPreview>()
             val likersList =mutableListOf<UserPreview>()
 
-            if (usersList != null) {
-                for ((key, value) in usersList) {
-                    if (event.likeOwnerIds.contains(key)){
-                        value.isLiked = true
-                        likersList.add(value)
-                    }
-                    if (event.speakerIds.contains(key)) {
-                        value.isSpeaker = true
-                        speakerslist.add(value)
-                    }
-                    if (event.participantsIds.contains(key)) {
-                        value.isParticipating = true
-                        participatelist.add(value)
-                    }
+            for ((key, value) in usersList) {
+                if (event.likeOwnerIds.contains(key)){
+                    value.isLiked = true
+                    likersList.add(value)
+                }
+                if (event.speakerIds.contains(key)) {
+                    value.isSpeaker = true
+                    speakerslist.add(value)
+                }
+                if (event.participantsIds.contains(key)) {
+                    value.isParticipating = true
+                    participatelist.add(value)
                 }
             }
             if (event.participantsIds.isEmpty()) {
@@ -245,6 +240,12 @@ class EventViewHolder(
                 }.show()
             }
 
+            val job = event.authorJob
+            if (job!=null) {
+                placeWork.isVisible = true
+                placeWork.text = job
+            }else { placeWork.isVisible = false}
+
             like.setOnClickListener {
                 listener.onLike(event)
             }
@@ -259,13 +260,11 @@ class EventViewHolder(
                 listener.onFullscreenAttachment(event)
             }
 
-            coordinates.setOnClickListener { view ->
-                view.findNavController().navigate(R.id.action_postFeedFragment_to_mapsFragment,
-                    Bundle().apply {
-                        Point(
-                            event.coordinates?.latitude!!.toDouble(), event.coordinates.longitude.toDouble()
-                        ).also { pointArg = it }
-                    })
+
+            if (event.coordinates != null) {
+                coordinates.isVisible = true
+                coordinates.setOnClickListener { listener.onMap(event)}
+
             }
 
             speakers.setOnClickListener {
@@ -290,15 +289,10 @@ class EventDiffCallback : DiffUtil.ItemCallback<Event>() {
         return oldItem == newItem
     }
     override fun getChangePayload(oldItem: Event, newItem: Event): Any {
-        return if (oldItem::class != newItem::class) {
-        } else if (oldItem is Event && newItem is Event) {
-            Payload(
+        return  Payload(
                 liked = newItem.likedByMe.takeIf { oldItem.likedByMe != it },
                 join = newItem.participatedByMe.takeIf { oldItem.participatedByMe != it },
                 content = newItem.content.takeIf { oldItem.content != it },
             )
-        } else {
-
-        }
     }
 }

@@ -2,7 +2,6 @@ package ru.netology.linkedin_network.adapter
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +9,16 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.databinding.CardPostBinding
 import ru.netology.linkedin_network.enumeration.AttachmentType.*
-import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
 import ru.netology.linkedin_network.utils.Utils
 import ru.netology.linkedin_network.view.load
 import ru.netology.linkedin_network.view.loadCircleCrop
 import com.google.android.exoplayer2.MediaItem
-import com.yandex.mapkit.geometry.Point
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.netology.linkedin_network.dto.*
 import ru.netology.linkedin_network.utils.toText
@@ -36,6 +32,7 @@ interface OnPostInteractionListener {
     fun onFullscreenAttachment(post: Post){}
     fun onViewMentors(post: Post) {}
     fun onViewLikeOwner(post: Post) {}
+    fun onMap(post: Post)
 }
 
 class FeedAdapter(
@@ -150,7 +147,12 @@ class PostViewHolder(
             val postText = post.content + linkText
             content.text = postText
             like.isChecked = post.likedByMe
-            coordinates.visibility = if (post.coordinates != null) View.VISIBLE else View.INVISIBLE
+
+            if (post.coordinates != null) {
+                coordinates.isVisible = true
+                coordinates.setOnClickListener { listener.onMap(post)}
+            }
+
             mentionedMe.isVisible = post.mentionedMe
             menu.isVisible = post.ownedByMe
 
@@ -171,6 +173,11 @@ class PostViewHolder(
                     }
                 }
             }
+            val job = post.authorJob
+            if (job!=null) {
+                placeWork.isVisible = true
+                placeWork.text = job
+            }else { placeWork.isVisible = false}
 
             if (post.mentionIds!!.isEmpty()) {
                 postUsersGroup.visibility = View.INVISIBLE
@@ -226,14 +233,6 @@ class PostViewHolder(
                 listener.onFullscreenAttachment(post)
             }
 
-            coordinates.setOnClickListener { view ->
-                view.findNavController().navigate(R.id.action_postFeedFragment_to_mapsFragment,
-                    Bundle().apply {
-                        Point(
-                            post.coordinates?.latitude!!.toDouble(), post.coordinates.longitude.toDouble()
-                        ).also { pointArg = it }
-                    })
-            }
         }
     }
 }
@@ -251,15 +250,10 @@ class FeedDiffCallback : DiffUtil.ItemCallback<Post>() {
     }
 
     override fun getChangePayload(oldItem: Post, newItem: Post): Any {
-        return if (oldItem::class != newItem::class) {
-        } else if (oldItem is Post && newItem is Post) {
-            Payload(
+        return Payload(
                 liked = newItem.likedByMe.takeIf { oldItem.likedByMe != it },
                 content = newItem.content.takeIf { oldItem.content != it },
             )
-        } else {
-
-        }
     }
 }
 

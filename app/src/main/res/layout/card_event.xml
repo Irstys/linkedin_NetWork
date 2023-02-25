@@ -14,7 +14,6 @@
             android:id="@+id/avatar"
             android:layout_width="@dimen/postAvatarSize"
             android:layout_height="@dimen/postAvatarSize"
-            android:layout_marginBottom="@dimen/commonSpacingMedium"
             android:contentDescription="@string/avatar_user"
             app:layout_constraintBottom_toBottomOf="@id/header_barrier"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,25 @@
             app:layout_constraintStart_toEndOf="@id/avatar"
             app:layout_constraintTop_toBottomOf="@id/author"
             tools:text="@string/sample_published_date" />
-
+        <TextView
+            android:id="@+id/placeWork"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginEnd"
+            android:layout_marginEnd="@dimen/marginEnd"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:autoLink="web"
+            android:checkable="true"
+            android:linksClickable="true"
+            android:minHeight="@dimen/marginStart"
+            android:visibility="visible"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toStartOf="@id/menu"
+            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/published"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@string/placeWork" />
         <ImageView
             android:id="@+id/type"
             android:layout_width="wrap_content"
@@ -76,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="avatar,published,type,menu" />
+            app:constraint_referenced_ids="placeWork,avatar,published,type,menu" />
 
         <TextView
             android:id="@+id/content"
@@ -99,6 +116,7 @@
             android:layout_marginStart="@dimen/commonSpacingMedium"
             android:contentDescription="@string/coordinates"
             app:icon="@drawable/ic_location_24"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header_barrier" />
         <TextView

@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/commonSpacingColum"
+        android:layout_marginBottom="@dimen/commonSpacingSmall"
         android:layout_marginEnd="@dimen/commonSpacingMedium"
         android:clickable="true"
         android:contentDescription="@string/add_event"
