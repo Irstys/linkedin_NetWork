@@ -71,9 +71,15 @@ class PostFeedFragment : Fragment() {
             }
 
             override fun onEdit(post: Post) {
+                if (authViewModel.authenticated) {
+                    viewModel.getPostRequest(post.id)
                 findNavController().navigate(
-                    R.id.action_postFeedFragment_to_newPostFragment,
+                    R.id.action_postFeedFragment_to_editPostFragment,
                     Bundle().apply { intArg = post.id })
+                } else {
+                    Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
+                }
             }
 
             override fun onRemove(post: Post) {
@@ -143,9 +149,6 @@ class PostFeedFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
             }}
-
-            override fun onHide(post: Post) {viewModel.hidePost(post.id)}
-
         })
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(

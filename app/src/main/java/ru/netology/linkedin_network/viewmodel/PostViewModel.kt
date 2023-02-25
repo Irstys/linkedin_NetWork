@@ -46,9 +46,9 @@ class PostViewModel @Inject constructor(
     val Post: LiveData<Post>
         get() = _Post
 
-    private val _Postd = SingleLiveEvent<Unit>()
-    val Postd: LiveData<Unit>
-        get() = _Postd
+    private val _editedPost = SingleLiveEvent<Unit>()
+    val editedPost: LiveData<Unit>
+        get() = _editedPost
 
     private val _media = MutableLiveData(noMedia)
     val media: LiveData<MediaModel>
@@ -72,21 +72,12 @@ class PostViewModel @Inject constructor(
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
-                pagingData.filter { post ->
-                     !hidePosts.contains(post.id)
-                    }
                 pagingData.map {
                     it.copy(ownedByMe = it.authorId == myId)
                 }
 
             }
         }
-
-    val hidePosts = mutableSetOf<Int>()
-
-    fun hidePost(id:Int) {
-        hidePosts.add(id)
-    }
     fun getLikedAndMentionedUsersList(post: Post) {
         viewModelScope.launch {
             try {
@@ -234,7 +225,7 @@ class PostViewModel @Inject constructor(
                 repository.savePost(post)
                 _dataState.value = FeedModelState(error = false)
                 deleteEditPost()
-                _Postd.value = Unit
+                _editedPost.value = Unit
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -261,4 +252,5 @@ class PostViewModel @Inject constructor(
         mentions.clear()
         mentionsData.postValue(mentions)
     }
+
 }

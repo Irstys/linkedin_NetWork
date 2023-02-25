@@ -53,9 +53,9 @@ class PostRepositoryImpl @Inject constructor(
             throw NetworkError
         }
     }
-    override suspend fun getMentions(post: Post) {
+    override suspend fun getLikers(post: Post) {
         try {
-            postMentionsData.postValue(emptyList())
+            postLikersData.postValue(emptyList())
             val response = apiService.getPostById(post.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -69,15 +69,15 @@ class PostRepositoryImpl @Inject constructor(
                 }
 
             }
-            postMentionsData.postValue(menions)
+            postLikersData.postValue(menions)
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun getLikers(post: Post) {
+    override suspend fun getMentions(post: Post) {
         try {
-            postLikersData.postValue(emptyList())
+            postMentionsData.postValue(emptyList())
             val response = apiService.getPostById(post.id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -90,7 +90,7 @@ class PostRepositoryImpl @Inject constructor(
                     liked.add(value)
                 }
             }
-            postLikersData.postValue(liked)
+            postMentionsData.postValue(liked)
         } catch (e: IOException) {
             throw NetworkError
         }

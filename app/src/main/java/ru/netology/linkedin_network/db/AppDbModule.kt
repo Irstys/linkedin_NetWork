@@ -26,7 +26,7 @@ class AppDbModule {
             .build()
 
     @Provides
-    fun providePostDao(appDb: AppDb): PostDao = appDb.postDao()
+    fun providePostDao(appDb: AppDb): PostDao = appDb.PostDao()
 
     @Provides
     fun providePostRemoteKeyDao(appDb: AppDb): PostRemoteKeyDao =

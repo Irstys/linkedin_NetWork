@@ -197,12 +197,12 @@ class EventViewHolder(
                         speakerslist.add(value)
                     }
                     if (event.participantsIds.contains(key)) {
-                        value.isSpeaker = true
+                        value.isParticipating = true
                         participatelist.add(value)
                     }
                 }
             }
-            if (event.participantsIds!!.isEmpty()) {
+            if (event.participantsIds.isEmpty()) {
                 postUsersGroup.visibility = View.INVISIBLE
             } else {
                 postUsersGroup.isVisible = true

@@ -31,14 +31,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import ru.netology.linkedin_network.ui.ProfileFragment.Companion.textArg
 import ru.netology.linkedin_network.utils.StringArg
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
-    companion object {
-        var Bundle.textArg: String? by StringArg
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,11 +60,6 @@ class NewPostFragment : Fragment() {
                     findNavController().navigate(R.id.postFeedFragment)
                 }.show()
         }
-
-            if (arguments?.intArg != null) {
-                val id = arguments?.intArg
-                id?.let { viewModel.getPostRequest(it) }
-            }
 
         val adapter = CreatePageUsersListAdapter(object : CreatePageUsersListInteractionListener {
             override fun openUserProfile(id: Int) {
@@ -282,9 +275,8 @@ class NewPostFragment : Fragment() {
                 viewModel.savePost(content)
             }
 
-            viewModel.Postd.observe(viewLifecycleOwner) {
                 findNavController().navigateUp()
-            }
+
 
             viewModel.dataState.observe(viewLifecycleOwner) { state ->
                 if (state.error) {

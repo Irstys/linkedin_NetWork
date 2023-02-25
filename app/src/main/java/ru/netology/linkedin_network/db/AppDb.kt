@@ -16,7 +16,7 @@ import ru.netology.linkedin_network.entity.*
 )
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
-    abstract fun postDao(): PostDao
+    abstract fun PostDao(): PostDao
     abstract fun postRemoteKeyDao(): PostRemoteKeyDao
     abstract fun eventDao(): EventDao
     abstract fun eventRemoteKeyDao(): EventRemoteKeyDao

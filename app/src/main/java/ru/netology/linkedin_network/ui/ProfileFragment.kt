@@ -186,7 +186,6 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
             }}
 
-            override fun onHide(post: Post) {postViewModel.hidePost(post.id)}
         })
 
         binding.postList.adapter = feedAdapter.withLoadStateHeaderAndFooter(

@@ -1,10 +1,10 @@
-package ru.netology.linkedin_network.ui.event
+package ru.netology.linkedin_network.ui.post
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.provider.MediaStore.Video
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +17,11 @@ import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.CreatePageUsersListAdapter
 import ru.netology.linkedin_network.adapter.CreatePageUsersListInteractionListener
-import ru.netology.linkedin_network.databinding.FragmentNewEventBinding
+import ru.netology.linkedin_network.databinding.FragmentNewPostBinding
 import ru.netology.linkedin_network.enumeration.AttachmentType.*
-import ru.netology.linkedin_network.enumeration.EventType
-import ru.netology.linkedin_network.ui.event.EventFeedFragment.Companion.intArg
 import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
-import ru.netology.linkedin_network.utils.Utils
-import ru.netology.linkedin_network.viewmodel.EventViewModel
+import ru.netology.linkedin_network.ui.post.PostFeedFragment.Companion.intArg
+import ru.netology.linkedin_network.viewmodel.PostViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -32,57 +30,54 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import ru.netology.linkedin_network.ui.AppActivity
+import okhttp3.RequestBody.Companion.toRequestBody
+import ru.netology.linkedin_network.ui.ProfileFragment.Companion.textArg
 import ru.netology.linkedin_network.utils.StringArg
-import java.io.File
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class NewEventFragment : Fragment() {
-    companion object {
-        var Bundle.textArg: String? by StringArg
-    }
-    private val viewModel: EventViewModel by activityViewModels()
-
+class EditPostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        val binding = FragmentNewEventBinding.inflate(
+        val binding = FragmentNewPostBinding.inflate(
             inflater,
             container,
             false
         )
 
-        (activity as AppActivity).supportActionBar?.title = getString(R.string.add_event)
-
+        val viewModel: PostViewModel by activityViewModels()
         var file: MultipartBody.Part
+
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             Snackbar.make(binding.root, R.string.skip, Snackbar.LENGTH_SHORT)
                 .setAction(R.string.exit) {
-                    viewModel.deleteEditEvent()
-                    findNavController().navigate(R.id.eventFeedFragment)
+                    viewModel.deleteEditPost()
+                    findNavController().navigate(R.id.postFeedFragment)
                 }.show()
         }
 
-        if (arguments?.intArg != null) {
-            val id = arguments?.intArg
-            id?.let { viewModel.getEventRequest(it) }
-        }
+                val id = requireArguments().intArg
+                 viewModel.getPostRequest(id)
+                println(viewModel.newPost)
+
+
 
         val adapter = CreatePageUsersListAdapter(object : CreatePageUsersListInteractionListener {
             override fun openUserProfile(id: Int) {
                 val idAuthor = id.toString()
-                findNavController().navigate(R.id.userProfileFragment,
+                findNavController().navigate(
+                    R.id.userProfileFragment,
                     Bundle().apply { textArg = idAuthor })
             }
 
             override fun deleteFromList(id: Int) {
                 viewModel.unCheck(id)
-                viewModel.addSpeakerIds()
+                viewModel.addMentionIds()
             }
         })
 
@@ -103,7 +98,7 @@ class NewEventFragment : Fragment() {
                             "file", resultFile?.name, resultFile!!.asRequestBody()
                         )
                         viewModel.changeMedia(uri, resultFile, IMAGE)
-                        viewModel.addMediaToEvent(IMAGE, file)
+                        viewModel.addMediaToPost(IMAGE, file)
                     }
                 }
             }
@@ -137,65 +132,65 @@ class NewEventFragment : Fragment() {
                 val data = activityResult.data
 
                 if (resultCode == Activity.RESULT_OK) {
-                    val selectedVideoUri = data?.data!!
-                    val selectedVideoPath =
-                        Utils.getVideoPathFromUri(selectedVideoUri, requireActivity())
-                    if (selectedVideoPath != null) {
-                        val resultFile = File(selectedVideoPath)
+                    val selectedVideoUri = data?.data
+                    if (selectedVideoUri != null) {
+                        val contentResolver = requireContext().contentResolver
                         file = MultipartBody.Part.createFormData(
-                            "file", resultFile.name, resultFile.asRequestBody()
+                            "file",
+                            "video",
+                            requireNotNull(contentResolver.openInputStream(selectedVideoUri)).readBytes()
+                                .toRequestBody()
                         )
-                        viewModel.changeMedia(
-                            selectedVideoUri,
-                            resultFile,
-                            VIDEO
-                        )
-                        viewModel.addMediaToEvent(VIDEO, file)
+                        viewModel.changeMedia(selectedVideoUri, null, VIDEO)
+                        viewModel.addMediaToPost(VIDEO, file)
                     }
+                } else {
+                    Snackbar.make(binding.root, R.string.video, Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }
 
         binding.pickVideo.setOnClickListener {
             val intent = Intent(
                 Intent.ACTION_PICK,
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                Video.Media.EXTERNAL_CONTENT_URI
             )
             pickVideoLauncher.launch(intent)
         }
 
-        val pickAudioLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-                val resultCode = activityResult.resultCode
-                val data = activityResult.data
+            val pickAudioLauncher =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+                    val resultCode = activityResult.resultCode
+                    val data = activityResult.data
 
-                if (resultCode == Activity.RESULT_OK) {
-                    val selectedAudioUri = data?.data!!
-                    val selectedAudioPath =
-                        Utils.getAudioPathFromUri(selectedAudioUri, requireActivity())
-                    if (selectedAudioPath != null) {
-                        val resultFile = File(selectedAudioPath)
-                        file = MultipartBody.Part.createFormData(
-                            "file", resultFile.name, resultFile.asRequestBody()
-                        )
-                        viewModel.changeMedia(
-                            selectedAudioUri,
-                            resultFile,
-                            AUDIO
-                        )
-                        viewModel.addMediaToEvent(AUDIO, file)
+                    if (resultCode == Activity.RESULT_OK) {
+                        val selectedAudioUri = data?.data
+                        if (selectedAudioUri != null) {
+                            val contentResolver = requireContext().contentResolver
+                            file = MultipartBody.Part.createFormData(
+                                "file",
+                                "audio",
+                                requireNotNull(contentResolver.openInputStream(selectedAudioUri)).readBytes()
+                                    .toRequestBody()
+                            )
+                            viewModel.changeMedia(selectedAudioUri, null, AUDIO)
+                            viewModel.addMediaToPost(AUDIO, file)
+                        }
+                    } else {
+                        Snackbar.make(binding.root, R.string.video, Snackbar.LENGTH_SHORT)
+                            .show()
                     }
                 }
-            }
 
         binding.pickAudio.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            )
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "audio/*"
             pickAudioLauncher.launch(intent)
         }
 
-        viewModel.media.observe(viewLifecycleOwner) { mediaModel ->
+        viewModel.media.observe(viewLifecycleOwner)
+        { mediaModel ->
             if (mediaModel.uri == null) {
                 binding.mediaContainer.visibility = View.GONE
                 return@observe
@@ -217,31 +212,28 @@ class NewEventFragment : Fragment() {
             }
         }
 
-        binding.addSpeakers.setOnClickListener {
-            binding.addSpeakers.isChecked =
-                viewModel.newEvent.value?.speakerIds?.isNotEmpty() ?: false
-            findNavController().navigate(R.id.action_newEventFragment_to_chooseEventUsersFragment)
+        binding.addMention.setOnClickListener {
+            findNavController().navigate(R.id.action_newPostFragment_to_choosePostUsersFragment)
         }
 
         binding.addCoordinates.setOnClickListener {
-            if (viewModel.newEvent.value?.coordinates != null) {
-                binding.addCoordinates.text = null
+            if (viewModel.newPost.value?.coordinates != null) {
                 val point = Point(
-                    viewModel.newEvent.value?.coordinates!!.latitude.toDouble(),
-                    viewModel.newEvent.value?.coordinates!!.longitude.toDouble()
+                    viewModel.newPost.value?.coordinates!!.latitude.toDouble(),
+                    viewModel.newPost.value?.coordinates!!.longitude.toDouble()
                 )
-                viewModel.isEventIntent = true
-                findNavController().navigate(R.id.action_newEventFragment_to_mapsFragment,
+                viewModel.isPostIntent = true
+                findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment,
                     Bundle().apply { pointArg = point })
             } else {
-                viewModel.isEventIntent = true
-                findNavController().navigate(R.id.action_newEventFragment_to_mapsFragment)
+                viewModel.isPostIntent = true
+                findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
             }
         }
 
-        if (viewModel.newEvent.value?.coordinates != null) {
-            val latitude = viewModel.newEvent.value?.coordinates!!.latitude
-            val longitude = viewModel.newEvent.value?.coordinates!!.longitude
+        if (viewModel.newPost.value?.coordinates != null) {
+            val latitude = viewModel.newPost.value?.coordinates!!.latitude
+            val longitude = viewModel.newPost.value?.coordinates!!.longitude
             val coordinates = "$latitude, $longitude"
             binding.addCoordinates.setText(coordinates)
         } else {
@@ -253,20 +245,21 @@ class NewEventFragment : Fragment() {
             viewModel.addLink(link)
         }
 
-        binding.speakerIds.adapter = adapter
-        viewModel.speakersData.observe(viewLifecycleOwner) {
+        binding.mentionIds.adapter = adapter
+        viewModel.mentionsData.observe(viewLifecycleOwner)
+        {
             if (it.isEmpty()) {
-                binding.scrollSpeakers.visibility = View.GONE
+                binding.scrollMentions.visibility = View.GONE
             } else {
                 adapter.submitList(it)
-                binding.scrollSpeakers.visibility = View.VISIBLE
+                binding.scrollMentions.visibility = View.VISIBLE
             }
         }
 
-        viewModel.newEvent.observe(viewLifecycleOwner) {
+        viewModel.newPost.observe(viewLifecycleOwner)
+        {
             it.content.let(binding.edit::setText)
             it.link.let(binding.addLink::setText)
-            binding.online.isChecked = it.type == EventType.ONLINE
             if (it.attachment != null) {
                 binding.mediaContainer.visibility = View.VISIBLE
             } else {
@@ -276,43 +269,27 @@ class NewEventFragment : Fragment() {
 
         binding.removeMedia.setOnClickListener {
             viewModel.changeMedia(null, null, null)
-            viewModel.newEvent.value = viewModel.newEvent.value?.copy(attachment = null)
+            viewModel.newPost.value = viewModel.newPost.value?.copy(attachment = null)
             binding.mediaContainer.visibility = View.GONE
         }
 
-        binding.addDateTime.setOnClickListener {
-            Utils.selectDateTimeDialog(binding.addDateTime, requireContext())
-        }
-
         binding.save.setOnClickListener {
-            Utils.hideKeyboard(requireView())
             val content = binding.edit.text.toString()
-            val datetime = binding.addDateTime.text.toString()
-            viewModel.addDateAndTime(datetime)
-            val event = viewModel.newEvent.value!!.copy(content = content)
-            if (content == "" || datetime == "") {
+            if (content == "") {
                 Snackbar.make(binding.root, R.string.empty_content_error, Snackbar.LENGTH_SHORT).show()
             } else {
-                viewModel.saveEvent(event)
+                viewModel.savePost(content)
             }
-        }
 
-        binding.online.setOnClickListener {
-            viewModel.addEventType()
-        }
+                findNavController().navigateUp()
 
-        viewModel.Eventd.observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
-        }
-        viewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
-                    .show()
+
+            viewModel.dataState.observe(viewLifecycleOwner) { state ->
+                if (state.error) {
+                    Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
             }
-        }
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
-            viewModel.deleteEditEvent()
-            findNavController().navigateUp()
         }
         return binding.root
     }

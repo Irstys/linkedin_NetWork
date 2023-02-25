@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_postFeedFragment_to_postLikedListFragment"
             app:destination="@id/postLikedListFragment" />
+        <action
+            android:id="@+id/action_postFeedFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
     </fragment>
 
     <fragment
@@ -198,5 +201,9 @@
         android:id="@+id/eventSpeakersListFragment"
         android:name="ru.netology.linkedin_network.ui.event.EventSpeakersListFragment"
         android:label="EventSpeakersListFragment" />
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="ru.netology.linkedin_network.ui.post.EditPostFragment"
+        android:label="EditPostFragment" />
 
 </navigation>

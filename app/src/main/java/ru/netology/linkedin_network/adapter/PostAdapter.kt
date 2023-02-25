@@ -32,7 +32,6 @@ interface OnPostInteractionListener {
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
-    fun onHide(post: Post) {}
     fun loadLikedAndMentionedUsersList(post: Post) {}
     fun onFullscreenAttachment(post: Post){}
     fun onViewMentors(post: Post) {}
@@ -151,7 +150,7 @@ class PostViewHolder(
             val postText = post.content + linkText
             content.text = postText
             like.isChecked = post.likedByMe
-            coordinates.isVisible = post.coordinates != null
+            coordinates.visibility = if (post.coordinates != null) View.VISIBLE else View.INVISIBLE
             mentionedMe.isVisible = post.mentionedMe
             menu.isVisible = post.ownedByMe
 
@@ -167,7 +166,7 @@ class PostViewHolder(
                         likersList.add(value)
                     }
                     if (post.mentionIds.contains(key)) {
-                        value.isSpeaker = true
+                        value.isMentioned = true
                         mentorslist.add(value)
                     }
                 }
@@ -201,10 +200,6 @@ class PostViewHolder(
                             }
                             R.id.object_edit -> {
                                 listener.onEdit(post)
-                                true
-                            }
-                            R.id.object_hide -> {
-                                listener.onHide(post)
                                 true
                             }
                             else -> false
