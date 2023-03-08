@@ -49,10 +49,6 @@ interface   ApiService {
     //Wall
 
     @GET("{userId}/wall/{id}/before")
-    suspend fun getWall(
-        @Path("userId") userId: Int,
-    ): Response<List<Post>>
-    @GET("{userId}/wall/{id}/before")
     suspend fun getWallBefore(
         @Path("userId") userId: Int,
         @Path("id") id: Int,
