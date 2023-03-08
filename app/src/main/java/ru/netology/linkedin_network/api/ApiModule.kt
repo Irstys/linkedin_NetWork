@@ -14,15 +14,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import ru.netology.linkedin_network.BuildConfig.BASE_URL
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 class ApiModule {
-
-    companion object {
-        private const val BASE_URL = "https://netomedia.ru/api/"
-    }
 
     @Provides
     fun provideLogging(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {

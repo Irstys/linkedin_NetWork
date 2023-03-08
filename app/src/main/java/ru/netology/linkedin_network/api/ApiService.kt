@@ -8,7 +8,7 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface   ApiService {
-    //МРегистрация
+    //Регистрация
     @FormUrlEncoded
     @POST("users/authentication")
     suspend fun signIn(

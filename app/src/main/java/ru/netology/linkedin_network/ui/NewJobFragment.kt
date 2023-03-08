@@ -1,13 +1,11 @@
 package ru.netology.linkedin_network.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
@@ -23,9 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewJobFragment: Fragment() {
     private val viewModel: UserProfileViewModel by viewModels()
-    @SuppressLint("FragmentBackPressedCallback", "UseRequireInsteadOfGet",
-        "ClickableViewAccessibility"
-    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

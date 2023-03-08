@@ -3,9 +3,7 @@ package ru.netology.linkedin_network.dao
 import androidx.room.Dao
 import androidx.room.TypeConverter
 import ru.netology.linkedin_network.dto.Coordinates
-import ru.netology.linkedin_network.dto.User
 import ru.netology.linkedin_network.enumeration.AttachmentType
-import ru.netology.linkedin_network.enumeration.EventType
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.netology.linkedin_network.dto.UserPreview
@@ -39,13 +37,6 @@ class Converters {
         val maptype = object : TypeToken<Map<Int, UserPreview>>() {}.type
         return Gson().fromJson(string, maptype)
     }
-
-    @TypeConverter
-    fun fromEventType(value: EventType) = value.name
-
-    @TypeConverter
-    fun toEventType(value: String) = enumValueOf<EventType>(value)
-
     @TypeConverter
     fun coordinatesToJson(coordinates: Coordinates?): String? {
         return if (coordinates == null) {
