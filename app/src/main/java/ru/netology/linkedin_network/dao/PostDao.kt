@@ -8,7 +8,8 @@ import ru.netology.linkedin_network.entity.PostEntity
 interface PostDao {
     @Query("SELECT * FROM posts ORDER BY id DESC")
     fun getAllPosts(): PagingSource<Int, PostEntity>
-
+    @Query("SELECT * FROM posts WHERE authorId = :authorId ORDER BY id DESC")
+    fun getPagingSource(authorId: Int): PagingSource<Int, PostEntity>
     @Query("SELECT COUNT(*) == 0 FROM posts")
     suspend fun isEmpty(): Boolean
 

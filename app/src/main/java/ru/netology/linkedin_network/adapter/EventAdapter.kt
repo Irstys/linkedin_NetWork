@@ -206,12 +206,12 @@ class EventViewHolder(
                 toText(participatelist, participates)
             }
 
-            if (event.speakerIds!!.isEmpty()) {
+            if (event.speakerIds.isEmpty()) {
                 speakers.text = ""
             } else {
                 speakers.text = numbersToString(speakerslist.size )
             }
-            if (event.likeOwnerIds!!.isEmpty()) {
+            if (event.likeOwnerIds.isEmpty()) {
                 postLikersGroup.visibility = View.GONE
             } else {
                 postLikersGroup.isVisible = true

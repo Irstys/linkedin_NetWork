@@ -37,7 +37,7 @@ private val noMedia = MediaModel()
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val repository: PostRepository,
-    appAuth: AppAuth
+    private val appAuth: AppAuth
 ) : ViewModel() {
 
     private val _dataState = MutableLiveData<FeedModelState>()
@@ -66,7 +66,7 @@ class PostViewModel @Inject constructor(
     val cords: LiveData<Point>
         get() = _cords
 
-      val newPost: MutableLiveData<Post> = MutableLiveData(emptyPost)
+    val newPost: MutableLiveData<Post> = MutableLiveData(emptyPost)
     val usersList: MutableLiveData<List<User>> = MutableLiveData()
     val mentionsData: MutableLiveData<MutableList<User>> = MutableLiveData()
 
@@ -93,7 +93,27 @@ class PostViewModel @Inject constructor(
 
             }
         }
-
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun loadUserWall(id: Int): Flow<PagingData<FeedItem>> = appAuth
+        .authStateFlow
+        .flatMapLatest { (myId, _) ->
+            repository.loadUserWall(id).map { pagingData ->
+                pagingData.insertSeparators(
+                    generator = { before, _ ->
+                        if (before?.id?.rem(5) == 0) {
+                            Ad(Random.nextInt(),adUrl)
+                        } else {
+                            null
+                        }
+                    })
+                pagingData.map { post ->
+                    post.copy(
+                        ownedByMe = post.authorId == myId,
+                        likedByMe = post.likeOwnerIds.contains(myId)
+                    )
+                }
+            }
+        }
 
     fun getLikedAndMentionedUsersList(post: Post) {
         viewModelScope.launch {

@@ -45,6 +45,33 @@ interface   ApiService {
 
     @GET("users")
     suspend fun getAllUsers(): Response<List<User>>
+
+    //Wall
+
+    @GET("{userId}/wall/{id}/before")
+    suspend fun getWall(
+        @Path("userId") userId: Int,
+    ): Response<List<Post>>
+    @GET("{userId}/wall/{id}/before")
+    suspend fun getWallBefore(
+        @Path("userId") userId: Int,
+        @Path("id") id: Int,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("{userId}/wall/{id}/after")
+    suspend fun getWallAfter(
+        @Path("userId") userId: Int,
+        @Path("id") id: Int,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("{userId}/wall/latest")
+    suspend fun getWallLatest(
+        @Path("userId") userId: Int,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
     //Posts
     @POST("posts")
     suspend fun savePost(@Body post: Post): Response<Post>

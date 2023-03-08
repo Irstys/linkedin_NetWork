@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.filter
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.*
@@ -32,7 +31,6 @@ import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import ru.netology.linkedin_network.databinding.FragmentProfileBinding
 import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
 
@@ -111,13 +109,13 @@ class ProfileFragment : Fragment() {
                     postViewModel.likePost(post)
                 } else {
                     Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_signInFragment)
                 }
             }
 
             override fun onEdit(post: Post) {
                 findNavController().navigate(
-                    R.id.action_postFeedFragment_to_newPostFragment,
+                    R.id.action_userProfileFragment_to_editPostFragment,
                     Bundle().apply { intArg = post.id })
             }
 
@@ -137,7 +135,7 @@ class ProfileFragment : Fragment() {
                     startActivity(shareIntent)
                 } else {
                     Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_signInFragment)
                 }
             }
 
@@ -147,11 +145,11 @@ class ProfileFragment : Fragment() {
                         return
                     } else {
                         postViewModel.getLikedAndMentionedUsersList(post)
-                        findNavController().navigate(R.id.action_postFeedFragment_to_postUsersListFragment)
+                        findNavController().navigate(R.id.action_userProfileFragment_to_postUsersListFragment)
                     }
                 } else {
                     Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_signInFragment)
                 }
             }
 
@@ -159,7 +157,7 @@ class ProfileFragment : Fragment() {
                 if (post.attachment?.url != "") {
                     when (post.attachment?.type) {
                         AttachmentType.IMAGE -> {
-                            findNavController().navigate(R.id.action_postFeedFragment_to_showPhotoFragment,
+                            findNavController().navigate(R.id.action_userProfileFragment_to_showPhotoFragment,
                                 Bundle().apply { textArg = post.attachment.url })
                         }
                         else -> return
@@ -171,25 +169,25 @@ class ProfileFragment : Fragment() {
                     return
                 } else {
                     postViewModel.getMentionedUsersList(post)
-                    findNavController().navigate(R.id.action_postFeedFragment_to_postMentionListFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_postMentionListFragment)
                 }
             } else {
                 Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
+                findNavController().navigate(R.id.action_userProfileFragment_to_signInFragment)
             }}
             override fun onViewLikeOwner(post: Post) { if (authViewModel.authenticated) {
                 if (post.users.values.isEmpty()) {
                     return
                 } else {
                     postViewModel.getLikedUsersList(post)
-                    findNavController().navigate(R.id.action_postFeedFragment_to_postLikedListFragment)
+                    findNavController().navigate(R.id.action_userProfileFragment_to_postLikedListFragment)
                 }
             } else {
                 Snackbar.make(binding.root, R.string.error_auth, Snackbar.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_postFeedFragment_to_signInFragment)
+                findNavController().navigate(R.id.action_userProfileFragment_to_signInFragment)
             }}
             override fun onMap(post: Post){
-                findNavController().navigate(R.id.action_postFeedFragment_to_mapsFragment,
+                findNavController().navigate(R.id.action_userProfileFragment_to_mapsFragment,
                     Bundle().apply {
                         Point(
                             post.coordinates?.latitude!!.toDouble(), post.coordinates.longitude.toDouble()
@@ -219,14 +217,7 @@ class ProfileFragment : Fragment() {
         })
         lifecycleScope.launchWhenCreated {
             println(postViewModel.data.toString())
-                val data = postViewModel.data.map {
-                    it.filter {when (it){
-                       is Post ->  it.authorId == userId
-                       else -> false
-                    }
-                        }
-                    }
-                data.collectLatest {
+            postViewModel.loadUserWall(userId!!).collectLatest {
                     feedAdapter.submitData(it)
                 }
             }

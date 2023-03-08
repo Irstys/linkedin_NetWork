@@ -13,6 +13,7 @@ interface PostRepository {
     val postMentionsData: MutableLiveData<List<UserPreview>>
     val postLikersData: MutableLiveData<List<UserPreview>>
     suspend fun getAll()
+    fun loadUserWall(userId: Int): Flow<PagingData<Post>>
     suspend fun getLikedAndMentionedUsersList(post: Post)
     suspend fun getMentions(post: Post)
     suspend fun getLikers(post: Post)

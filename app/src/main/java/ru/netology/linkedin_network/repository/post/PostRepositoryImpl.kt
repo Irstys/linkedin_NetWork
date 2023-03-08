@@ -12,8 +12,11 @@ import ru.netology.linkedin_network.error.NetworkError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
+import ru.netology.linkedin_network.dao.PostRemoteKeyDao
+import ru.netology.linkedin_network.db.AppDb
 import ru.netology.linkedin_network.error.UnknownError
 import ru.netology.linkedin_network.repository.mediator.PostRemoteMediator
+import ru.netology.linkedin_network.repository.mediator.WallRemoteMediator
 import java.io.IOException
 import javax.inject.Inject
 
@@ -21,6 +24,8 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     mediator: PostRemoteMediator,
+    private val postRemoteKeyDao: PostRemoteKeyDao,
+    private val db: AppDb,
     private val dao: PostDao
 ) : PostRepository {
 
@@ -52,6 +57,23 @@ class PostRepositoryImpl @Inject constructor(
             throw UnknownError
         }
     }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun loadUserWall(userId: Int): Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        remoteMediator = WallRemoteMediator(
+            apiService = apiService,
+            postDao = dao,
+            postRemoteKeyDao = postRemoteKeyDao,
+            db = db,
+            authorId = userId,
+        ),
+        pagingSourceFactory = { dao.getPagingSource(userId) }
+    ).flow
+        .map {
+            it.map(PostEntity::toDto)
+        }
+
     override suspend fun getLikedAndMentionedUsersList(post: Post) {
         try {
             val response = apiService.getPostById(post.id)
