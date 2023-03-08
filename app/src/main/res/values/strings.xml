@@ -1,85 +1,42 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">LinkedInNeWork</string>
     <string name="google_play_unavailable" translatable="false">Google Api Unavailable</string>
-    <string name="welcome">welcome</string>
 
     <string name="place_for_your_photo">Place for your photo</string>
     <string name="startDate">Start date</string>
     <string name="finishDate">Finish date</string>
     <string name="position">Position</string>
     <string name="nameCompany">Name of Company</string>
-    <string name="format_event">Format Event</string>
-    <string name="link_event">Link Event</string>
-    <string name="empty_list">Empty list</string>
     <string name="error_auth">error auth</string>
     <string name="error">error</string>
     <string name="typeEvent">Format Event</string>
 
-    <string name="page_main">Main</string>
-    <string name="page_events">events</string>
-    <string name="page_users">users</string>
-    <string name="page_bottomSheetFragment">Select user</string>
-    <string name="page_newPost">New Post</string>
-    <string name="page_newEvent">New Event</string>
-    <string name="page_newJob">New Job</string>
-    <string name="page_map">Map</string>
-    <string name="page_job">Job</string>
-    <string name="page_wall">Wall</string>
-    <string name="page_post">Post</string>
-    <string name="page_event">Event</string>
-    <string name="page_profile">profile</string>
-    <string name="empty_users">Empty Users</string>
-    <string name="media_chooser">Select application</string>
     //menu
     <string name="menu">Menu</string>
     <string name="obj_remove">Remove</string>
     <string name="obj_edit">Edit</string>
-    <string name="obj_hide">Hide</string>
-    <string name="ok">Ok</string>
     <string name="add">Add</string>
-    <string name="cancel">Cancel</string>
     <string name="add_post">Add post</string>
     <string name="add_event">Add event</string>
     <string name="add_jobs">Add job</string>
 
     <string name="save">Save</string>
     <string name="main">Main</string>
-    <string name="clear">Clear</string>
     <string name="close">Close</string>
     <string name="skip">Skip</string>
     <string name="exit">Skip</string>
 
     //time
-    <string name="time">Time</string>
-    <string name="time_go">Time go</string>
-    <string name="set_time">set_time</string>
-    <string name="days">days</string>
-    <string name="days_ago">days ago</string>
-    <string name="date">Date</string>
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="more_old">More old</string>
     <string name="period_of_work">Period of work</string>
-    <string name="periodWork">Until now</string>
 
     //auth
-    <string name="authentication">authentication</string>
-    <string name="invalid_password">Invalid password</string>
     <string name="sign_name">Name</string>
     <string name="password">Password</string>
-    <string name="sign_in_button">Enter</string>
-    <string name="sign_up_name">Sign up</string>
-    <string name="sign_up_button">Enter</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
-    <string name="sign_in_name">Sign in</string>
     <string name="login">Login</string>
-    <string name="put_login">Put Login</string>
-    <string name="put_password">Put Password</string>
     <string name="repeat_password">Repeat Password</string>
-    <string name="logout">Logout</string>
-    <string name="registration">Register</string>
     <string name="enter_password">Enter password</string>
     <string name="enter_user_name">Enter your name</string>
     <string name="enter_login">Enter login</string>
@@ -89,99 +46,51 @@
     //users
     <string name="mentions">Mentions</string>
     <string name="speakers">Speakers</string>
-    <string name="mentors">Mentors</string>
     <string name="contacts">Contacts</string>
     <string name="likers">Likers</string>
     <string name="participants">Participants</string>
-    <string name="empty">Empty</string>
     <string name="load_avatar">Load Avatar</string>
     <string name="profile">Profile</string>
     <string name="map">map</string>
     <string name="choose_users">Choose users</string>
-    <string name="and">and</string>
 
     //job
-    <string name="get_job_details">Get job details</string>
 
     //error
-    <string name="invalid_link">Invalid link</string>
     <string name="empty_field">Empty field</string>
     <string name="empty_posts">There are no posts.\n If you create a new post, it will appear here</string>
     <string name="error_loading">Something went wrong. Try again later</string>
     <string name="empty_content_error">Content is empty</string>
     <string name="repeat_enter_password">Repeat Enter Password</string>
     <string name="password_error">Wrong password</string>
-    <string name="user_error">User already registered</string>
     <string name="error_empty_content">Content can\'t be empty</string>
-    <string name="retry_loading">Retry</string>
     <string name="server_error_message">"server error "</string>
-    <string name="refresh">Refresh</string>
 
-    <string name="join">Join</string>
-
-    <string name="channel_remote_name">Server notifications</string>
-    <string name="channel_remote_description">Notifications from remote server</string>
-    <string name="notification_new_post">%1$s have posted a new post</string>
-    <string name="notification_user_liked">User %1$s liked %2$s\'s post</string>
-    <string name="notification_user_new_posted">%1$s posted a new post</string>
-    <string name="error_notification_title">You are using an old version of the application</string>
-    <string name="error_notification_text">Please update the application for correct operation</string>
-
-    <string name="event_location">Location Event</string>
-    <string name="myLocation">My location</string>
-    <string name="locationSearching">Location searching</string>
-    <string name="location_searching">A button to determine your location position</string>
     <string name="location">Location</string>
     <string name="add_coordinates">Add coordinates</string>
-    <string name="use_card">"Sorry, you won\'t be able to view maps without permission to display your location"</string>
-
-    <string name="title_post">Posts</string>
-    <string name="title_event">Events</string>
-    <string name="title_contacts">Contacts</string>
-    <string name="title_job">Jobs</string>
 
     <string name="photo">Photo</string>
-    <string name="media">Media</string>
-    <string name="audio">audio</string>
     <string name="video">video</string>
 
-    <string name="select_photo">Select photo</string>
     <string name="take_photo">Take photo</string>
-    <string name="post_attachment">Attachment</string>
     <string name="pick_photo">Pick image</string>
     <string name="pick_video">Pick video</string>
     <string name="pick_audio">Pick audio</string>
     <string name="image_full_screen">Full screen</string>
-    <string name="take_media">Take media</string>
-    <string name="post_input_text_hint">Input text</string>
 
-    <string name="attachment">Attachment</string>
     <string name="coordinates">Coordinates</string>
     <string name="link">Link</string>
-    <string name="format">Format</string>
     <string name="online" translatable="false">Online</string>
 
     <string name="like">Like</string>
     <string name="share">Share</string>
-    <string name="views">Views</string>
     <string name="placeWork">Place work</string>
 
     <string name="avatar_user">Avatar user</string>
-    <string name="avatar_post">Avatar post</string>
     <string name="sample_published_date">20 november 2022</string>
-    <string name="emptyJobs">empty Jobs</string>
-    <string name="event">Event</string>
-    <string name="author">Author</string>
     <string name="user_name">User name</string>
-    <string name="event_name">Event name</string>
     <string name="events">Events</string>
     <string name="posts">Posts</string>
-    <string name="jobs">Jobs</string>
     <string name="users">Users</string>
-    <string name="new_posts">New posts</string>
-    <string name="work">Work experience</string>
     <string name="content">Content</string>
-    <string name="search">Search</string>
-    <string name="change">Change Avatar</string>
-    <string name="select">Select user</string>
 </resources>
