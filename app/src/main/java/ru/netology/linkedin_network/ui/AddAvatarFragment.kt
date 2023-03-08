@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import ru.netology.linkedin_network.auth.AppAuth
 import ru.netology.linkedin_network.databinding.FragmentAddAvatarBinding
 import ru.netology.linkedin_network.repository.aurh.AuthRepository
@@ -29,7 +30,7 @@ class AddAvatarFragment : Fragment() {
     @Inject
     lateinit var repository: AuthRepository
 
-    private val viewModel: SignUpViewModel by activityViewModels()
+    private val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

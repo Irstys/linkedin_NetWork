@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.UsersListAdapter
@@ -27,7 +28,7 @@ class EventUsersListFragment: Fragment() {
     ): View {
         val binding = FragmentPostUsersListBinding.inflate(inflater, container, false)
 
-        val viewModel: EventViewModel by activityViewModels()
+        val viewModel: EventViewModel by viewModels()
 
         val adapter = UsersListAdapter(object : UsersListInteractionListener {
             override fun openUserProfile(id: Int) {

@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.CreatePageUsersListAdapter
@@ -43,7 +44,7 @@ class NewEventFragment : Fragment() {
     companion object {
         var Bundle.textArg: String? by StringArg
     }
-    private val viewModel: EventViewModel by activityViewModels()
+    private val viewModel: EventViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

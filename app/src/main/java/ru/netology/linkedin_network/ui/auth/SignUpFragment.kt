@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import ru.netology.linkedin_network.auth.AppAuth
 import ru.netology.linkedin_network.repository.aurh.AuthRepository
 import ru.netology.linkedin_network.viewmodel.SignUpViewModel
@@ -27,7 +28,7 @@ class SignUpFragment : Fragment() {
     @Inject
     lateinit var repository: AuthRepository
 
-    private val viewModel: SignUpViewModel by activityViewModels()
+    private val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

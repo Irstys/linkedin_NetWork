@@ -40,9 +40,10 @@ class PostFeedFragment : Fragment() {
 
     private var binding: FragmentPostFeedBinding? = null
 
-    private val viewModel: PostViewModel by activityViewModels()
+    private val viewModel: PostViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
-    private var mediaRecyclerView: PostRecyclerView? = null
+    private val mediaRecyclerView: PostRecyclerView?
+        get() = binding?.list
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,15 +53,13 @@ class PostFeedFragment : Fragment() {
 
         val binding = FragmentPostFeedBinding.inflate(inflater, container, false)
 
-        authViewModel.data.observeForever {
+        authViewModel.data.observe(viewLifecycleOwner) {
             if (!authViewModel.authenticated) {
                 binding.fab.visibility = View.GONE
             } else {
                 binding.fab.visibility = View.VISIBLE
             }
         }
-
-        mediaRecyclerView = binding.list
 
         val adapter = FeedAdapter(object : OnPostInteractionListener {
             override fun onLike(post: Post) {

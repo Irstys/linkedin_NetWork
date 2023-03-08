@@ -37,8 +37,9 @@ class EventFeedFragment : Fragment() {
     private var binding: FragmentEventFeedBinding? = null
 
     private val authViewModel: AuthViewModel by viewModels()
-    private val viewModel: EventViewModel by activityViewModels()
-    private var mediaRecyclerView: EventRecyclerView? = null
+    private val viewModel: EventViewModel by viewModels()
+    private val mediaRecyclerView: EventRecyclerView?
+        get() = binding?.list
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,15 +48,13 @@ class EventFeedFragment : Fragment() {
     ): View {
         val binding = FragmentEventFeedBinding.inflate(inflater, container, false)
 
-        authViewModel.data.observeForever {
+        authViewModel.data.observe(viewLifecycleOwner) {
             if (!authViewModel.authenticated) {
                 binding.fab.visibility = View.GONE
             } else {
                 binding.fab.visibility = View.VISIBLE
             }
         }
-
-        mediaRecyclerView = binding.list
 
         val adapter = EventAdapter(object : OnEventInteractionListener {
             override fun onLike(event: Event) {

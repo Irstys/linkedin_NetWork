@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.ChooseUsersAdapter
@@ -26,7 +27,7 @@ class ChooseEventUsersFragment: Fragment() {
     ): View {
         val binding = FragmentChoosePostUsersBinding.inflate(inflater, container, false)
 
-        val eventViewModel: EventViewModel by activityViewModels()
+        val eventViewModel: EventViewModel by viewModels()
 
         eventViewModel.getUsers()
 

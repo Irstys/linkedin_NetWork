@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.ContactAdapter
@@ -21,11 +22,9 @@ import java.util.*
 @AndroidEntryPoint
 class ContactsFragment : Fragment() {
 
-    private var binding: FragmentContactsBinding? = null
+    val userViewModel: UserProfileViewModel by viewModels()
+    var adapter: ContactAdapter? =null
 
-    val userViewModel: UserProfileViewModel by activityViewModels()
-    lateinit var adapter: ContactAdapter
-    private var searchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,7 @@ class ContactsFragment : Fragment() {
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
-
+        var searchView: SearchView? = null
         val search = menu.findItem(R.id.menu_search)
         searchView = search?.actionView as? SearchView
         searchView?.isSubmitButtonEnabled = true
@@ -51,11 +50,11 @@ class ContactsFragment : Fragment() {
                         val newArray = it.filter {
                             it.name.lowercase(Locale.getDefault()).contains(searchText)
                         }
-                        adapter.submitList(newArray)
+                        adapter?.submitList(newArray)
                     }
                 } else {
                     userViewModel.data.observe(viewLifecycleOwner) {
-                        adapter.submitList(it)
+                        adapter?.submitList(it)
                     }
                 }
                 return true
@@ -73,7 +72,7 @@ class ContactsFragment : Fragment() {
 
         val users = userViewModel.getAllUsers()
 
-        adapter = ContactAdapter(object : ContactInteractionListener {
+        this.adapter = ContactAdapter(object : ContactInteractionListener {
             override fun openUserProfile(id: Int) {
                 val idAuthor = id.toString()
                 findNavController().navigate(
@@ -93,7 +92,7 @@ class ContactsFragment : Fragment() {
 
         userViewModel.data.observe(viewLifecycleOwner) {
             println(it.toString())
-            adapter.submitList(it)
+            adapter!!.submitList(it)
         }
 
         return binding.root
@@ -101,6 +100,6 @@ class ContactsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
+        adapter=null
     }
 }

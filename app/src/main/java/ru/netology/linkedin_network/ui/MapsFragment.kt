@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.databinding.FragmentMapsBinding
@@ -38,8 +39,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MapsFragment : Fragment() {
     private var binding: FragmentMapsBinding? = null
-    val postViewModel: PostViewModel by activityViewModels()
-    val eventViewModel: EventViewModel by activityViewModels()
+    val postViewModel: PostViewModel by viewModels()
+    val eventViewModel: EventViewModel by viewModels()
 
     companion object {
         var Bundle.pointArg: Point by PointArg
@@ -222,5 +223,6 @@ class MapsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+        mapView =null
     }
 }

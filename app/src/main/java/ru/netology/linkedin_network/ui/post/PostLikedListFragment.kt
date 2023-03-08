@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.adapter.UsersListAdapter
@@ -28,7 +29,7 @@ class PostLikedListFragment: Fragment() {
     ): View {
         val binding = FragmentPostUsersListBinding.inflate(inflater, container, false)
         (activity as AppCompatActivity).supportActionBar?.title = context?.getString(R.string.likers)
-        val viewModel: PostViewModel by activityViewModels()
+        val viewModel: PostViewModel by viewModels()
 
         val adapter = UsersListAdapter(object : UsersListInteractionListener {
             override fun openUserProfile(id: Int) {

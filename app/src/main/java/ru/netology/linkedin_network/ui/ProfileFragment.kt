@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.filter
@@ -38,9 +39,9 @@ import ru.netology.linkedin_network.ui.MapsFragment.Companion.pointArg
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
-    val userProfileViewModel: UserProfileViewModel by activityViewModels()
-    val authViewModel: AuthViewModel by activityViewModels()
-    val postViewModel: PostViewModel by activityViewModels()
+    val userProfileViewModel: UserProfileViewModel by viewModels()
+    val authViewModel: AuthViewModel by viewModels()
+    val postViewModel: PostViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +50,7 @@ class ProfileFragment : Fragment() {
     ): View {
         val binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        authViewModel.data.observeForever {
+        authViewModel.data.observe(viewLifecycleOwner)  {
             if (!authViewModel.authenticated || arguments != null) {
                 binding.addJob.visibility = View.GONE
                 binding.addPost.visibility = View.GONE

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.linkedin_network.R
 import ru.netology.linkedin_network.databinding.FragmentNewJobBinding
@@ -21,7 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewJobFragment: Fragment() {
-    private val viewModel: UserProfileViewModel by activityViewModels()
+    private val viewModel: UserProfileViewModel by viewModels()
     @SuppressLint("FragmentBackPressedCallback", "UseRequireInsteadOfGet",
         "ClickableViewAccessibility"
     )
