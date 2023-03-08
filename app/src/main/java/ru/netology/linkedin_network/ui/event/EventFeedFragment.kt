@@ -207,6 +207,15 @@ class EventFeedFragment : Fragment() {
             viewModel.data.collectLatest(adapter::submitData)
         }
 
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { state ->
+                binding.swipeRefresh.isRefreshing =
+                    state.refresh is LoadState.Loading ||
+                            state.prepend is LoadState.Loading ||
+                            state.append is LoadState.Loading
+            }
+        }
+
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
@@ -222,6 +231,7 @@ class EventFeedFragment : Fragment() {
                 binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
             }
         }
+        binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_eventFeedFragment_to_newEventFragment)

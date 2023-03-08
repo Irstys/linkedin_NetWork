@@ -204,16 +204,21 @@ class PostFeedFragment : Fragment() {
         })
 
         adapter.loadStateFlow
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest {
-                binding.swipeRefresh.isRefreshing = it.refresh is LoadState.Loading
-            }
-        }
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_postFeedFragment_to_newPostFragment)
 
         }
+
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { state ->
+                binding.swipeRefresh.isRefreshing =
+                    state.refresh is LoadState.Loading ||
+                            state.prepend is LoadState.Loading ||
+                            state.append is LoadState.Loading
+            }
+        }
+        binding.swipeRefresh.setOnRefreshListener(adapter::refresh)
 
         return binding.root
     }
